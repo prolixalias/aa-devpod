@@ -78,14 +78,18 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# switch out nasty old cat for bat
+if [ -x /usr/bin/batcat ]; then
+    alias cat="/usr/bin/batcat"
+fi
+
+# color GCC warnings/errors
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
 alias ll='ls -alF'
@@ -140,10 +144,10 @@ __bash_prompt() {
 __bash_prompt
 export PROMPT_DIRTRIM=4
 
-# set 256 colors for vim
+# set 256 colors for vim, among others but especially vim
 export TERM=xterm-256color
 
-# setup git config with user, email and access token
+# setup git config with input from user on first launch
 if [[ ! -a ~/.git_configured ]]; then
   read -p "Full name for git commits: " name
   read -p "Email address for git commits: " email
@@ -157,13 +161,14 @@ fi
 
 # this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
 function masterless() {
-  export WORKING_DIR=$(cd /workspaces/**; pwd)
+  export WORKING_DIR="/workspace"
   export ENVIRONMENT_DIR="/etc/puppetlabs/code/environments"
   export FACTER_localdev=true
   export FACTER_aa_datacenter=${1}  
   export FACTER_role="roles::${2}"
   export DEBUG=${3}
-  
+
+  # this is handled with secrets in kubernetes  
   if [[ ! -L /etc/puppetlabs/hiera/keys ]]; then
     sudo mkdir -p /etc/puppetlabs/hiera && sudo ln -s ~/.puppetlabs/eyaml/keys /etc/puppetlabs/hiera/keys
   fi
@@ -181,7 +186,7 @@ function masterless() {
   fi
 }
 
-# drop user into /workspace for editing
+# drop user into /workspace for editing joy
 cd /workspace
 
 ### eof

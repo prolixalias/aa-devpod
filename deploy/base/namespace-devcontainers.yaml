@@ -1,0 +1,9 @@
+# namespace-devcontainers.yml
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devcontainers
+  labels:
+    name: devcontainers

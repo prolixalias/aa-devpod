@@ -1,10 +1,11 @@
-# pod-puppet.yml
+# pod-puppet-focal.yml
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-puppet
+  namespace: devcontainers
+  name: pod-puppet-focal
   labels:
     name: devcontainer
 spec:
@@ -39,7 +40,13 @@ spec:
         # https://github.com/kubernetes/kubernetes/issues/34982
         mountPath: "/home/vscode/.ssh-egress"
         readOnly: true
-
+      - name: eyaml-keys
+        # https://github.com/kubernetes/kubernetes/issues/34982
+        mountPath: "..." # placeholder
+        readOnly: true
+      - name: r10k-config
+        mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
+        readOnly: true
     resources:
       limits:
         memory: 2048Mi
@@ -50,9 +57,9 @@ spec:
   volumes:
     - name: code-volume
       hostPath:
-        # location of repo on the host; on Linux this is the actual directory:
-        path: /Users/ptalbot/Documents/sandbox/aa-devcontainer
-        # On Windows with docker desktop, it's COMPLICATED:
+        # LINUX/MACOS: location of repo on the host we're launching from:
+        path: .
+        # WINDOWS: it's COMPLICATED:
         # - bind mount on the WSL2 image:
         #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
         # - this maps to:
@@ -69,8 +76,7 @@ spec:
     - name: ssh-egress
       secret:
         secretName: ssh-egress
-        # 0400 -> 256
-        defaultMode: 256
+        defaultMode: 0600
         items:
         - key: id_rsa
           path: id_rsa
@@ -78,6 +84,18 @@ spec:
           path: id_rsa.pub
         - key: known_hosts
           path: known_hosts
+    - name: eyaml-keys
+      secret:
+        secretName: eyaml-keys
+        defaultMode: 0640
+        items:
+        - key: private_key.pkcs7.pem
+          path: private_key.pkcs7.pem
+        - key: public_key.pkcs7.pem
+          path: public_key.pkcs7.pem
+    - name: r10k-config
+      configMap:
+        name: r10k-config
 
 ---
 apiVersion: v1
@@ -87,7 +105,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path    # this looks like it could be rancher-specific!
+  storageClassName: local-path # rancher-specific?
   resources:
     requests:
       storage: 2Gi

@@ -43,7 +43,7 @@ RUN /bin/mkdir -p ~/.ssh ~/.config/puppet ~/.vim/autoload ~/.vim/bundle ~/.vim/c
     /usr/bin/git clone --depth 1 https://github.com/rodjek/vim-puppet.git ~/.vim/bundle/puppet && \
     /usr/bin/git clone --depth 1 https://github.com/vim-syntastic/syntastic.git ~/.vim/bundle/syntastic
 
-COPY ../common/.vimrc /home/${USER_NAME}/.vimrc
-COPY ../common/.bashrc /home/${USER_NAME}/.bashrc
+COPY ../../common/.vimrc /home/${USER_NAME}/.vimrc
+COPY ../../common/.bashrc /home/${USER_NAME}/.bashrc
 
 ENTRYPOINT /usr/bin/bash

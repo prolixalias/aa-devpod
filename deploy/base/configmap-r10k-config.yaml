@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: devcontainers
+  name: r10k-config
+data:
+  r10k.yaml: |
+    ---
+    :cachedir: '/var/cache/r10k'
+    :sources:
+      :base:
+        remote: 'git@github.com:fervidus/control-repo_fervid.git'
+        basedir: '/etc/puppetlabs/code/environments'

@@ -3,20 +3,20 @@ services:
   puppet-focal:
     build:
       context: .
-      dockerfile: ./puppet-focal/Dockerfile
+      dockerfile: ./compose/puppet-focal/Dockerfile
     image: prolixalias/puppet-focal:${semver:-wip}
   puppet-jammy:
     build:
       context: .
-      dockerfile: ./puppet-jammy/Dockerfile
+      dockerfile: ./compose/puppet-jammy/Dockerfile
     image: prolixalias/puppet-jammy:${semver:-wip}
   puppet-oraclelinux7:
     build:
       context: .
-      dockerfile: ./puppet-oraclelinux7/Dockerfile
+      dockerfile: .compose//puppet-oraclelinux7/Dockerfile
     image: prolixalias/puppet-oraclelinux7:${semver:-wip}
   puppet-oraclelinux8:
     build:
       context: .
-      dockerfile: ./puppet-oraclelinux8/Dockerfile
+      dockerfile: ./compose/puppet-oraclelinux8/Dockerfile
     image: prolixalias/puppet-oraclelinux8:${semver:-wip}
