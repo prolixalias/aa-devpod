@@ -1,64 +1,109 @@
 # aa-devcontainer
-## reference
+Automation-centric devcontainers for use with VSCode
+## reference links
 
 | Link      | Description |
 | ----------- | ----------- |
+| [Rancher Desktop](https://rancherdesktop.io)| Kubernetes and container management |
 | [Microsoft repos](https://github.com/microsoft/vscode-dev-containers) | Microsoft devcontainer repos/documentation on GitHub |
 | [Docker Hub images](https://hub.docker.com/_/microsoft-vscode-devcontainers) | Official images on Docker Hub |
+| [Kubernetes Tools extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) | Extension to interact with kubernetes within VSCode |
+| [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) | Extension that allows remote development |
+| [Puppet extension](https://marketplace.visualstudio.com/items?itemName=puppet.puppet-vscode) | Extension with Puppet linting, syntactic highlighting and other useful tidbits |
 | [Kubernetes debugging](https://github.com/Azure/vscode-kubernetes-tools/blob/master/debug-on-kubernetes.md) | Debugging in VSCode on Kubernetes |
-| [Kubernetes Tools extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) | Extension to interact with kubernetes within VSCode |
 
 ## kubernetes
-### image
-#### nerdctl
+### :sparkles: images
+#### [containerd](https://containerd.io)
+##### build bionic
 ```shell
-/usr/local/bin/nerdctl -n k8s.io build -f ./deploy/Dockerfile.devcontainer-puppet-focal -t mcr-devcontainer-puppet-focal .
+nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=bionic -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
 ```
-#### moby
+##### build focal
 ```shell
-/usr/local/bin/docker build -f ./deploy/Dockerfile.devcontainer-puppet-focal -t mcr-devcontainer-puppet-focal .
-/usr/local/bin/kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=focal -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
 ```
-### namespace
+##### build jammy (future use, not implemented)
 ```shell
-/usr/local/bin/kubectl apply -f deploy/base/namespace-devcontainers.yaml
+nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=jammy -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
+```
+#### [moby](https://mobyproject.org)
+##### build bionic
+```shell
+docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
+```
+##### build focal
+```shell
+docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
+```
+##### build jammy (future use, not implemented)
+```shell
+docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
 ```
 
+##### add local-path storage
 ```shell
-/usr/local/bin/kubectl config set-context $(kubectl config current-context) --namespace devcontainers
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 ```
-### configmap
+### :sparkles: namespace creation
 ```shell
-/usr/local/bin/kubectl apply -f deploy/base/configmap-r10k-config.yaml
+kubectl apply -f ./deploy/base/namespace.devcontainer.yaml
 ```
-### secrets
-#### prerequisite key(s)
+### :sparkles: switch context accordingly
 ```shell
-/usr/bin/ssh-keygen -t ed25519 -a 100
+kubectl config set-context $(kubectl config current-context) --namespace devcontainer
 ```
-*NOTE:* [a thoughtful article on the topic of key generation](https://stribika.github.io/2015/01/04/secure-secure-shell.html)
+### :sparkles: configmap for r10k config
+```shell
+kubectl apply -f ./deploy/base/configmap.r10k-config.yaml
+```
+### :sparkles: secrets
+#### prerequisite keypair
+> *NOTE: add resulting public key to GHE, etc*
+```shell
+ssh-keygen -t ed25519 -a 100
+```
 #### create
 ```shell
 /usr/local/bin/op create document secret.ssh-egress.yaml --vault automation
 /usr/local/bin/op create document secret.eyaml-keys.yaml --vault automation
+/usr/local/bin/op create document secret.r10k-deploy-key.yaml --vault automation
 ```
-#### get
+#### apply
 ```shell
 /usr/local/bin/op get document secret.ssh-egress.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
 ```
-### apply
+### :sparkles: kustomize
 ```shell
-/usr/local/bin/kubectl kustomize deploy/overlays/paul | /usr/local/bin/kubectl apply -f -
+kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
+```
+### :sparkles: execs
+```direct shell access to container
+kubectl exec -ti puppet-ubuntu -- bash
+```
+### :sparkles: helm
+#### add puppetserver chart
+```shell
+helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
+```
+#### install puppetserver
+```shell
+helm install puppetserver --namespace devcontainer puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
 ```
 ## docker compose (deprecated)
-### usage
+### :sparkles: usage
 
-./compose/compose.sh [semver]
+`./compose/compose.sh [semver]`
 
 example:
 ```shell
 ./compose/compose.sh v0.0.0
 ```
 
-NOTE: if no tag/semver provided, resulting image(s) are tagged 'wip'
+> *NOTE: if no tag/semver provided, resulting image(s) are tagged 'wip'*
+
+## license
+
+[BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause)

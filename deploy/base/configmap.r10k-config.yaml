@@ -1,7 +1,10 @@
+# configmap.r10k-config.yaml
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: devcontainers
+  namespace: devcontainer
   name: r10k-config
 data:
   r10k.yaml: |

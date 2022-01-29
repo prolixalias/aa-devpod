@@ -4,8 +4,8 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: devcontainers
-  name: pod-puppet-focal
+  namespace: devcontainer
+  name: puppet-ubuntu
   labels:
     name: devcontainer
 spec:

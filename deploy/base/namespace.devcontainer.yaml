@@ -1,0 +1,10 @@
+# namespace.devcontainer.yaml
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devcontainer
+  labels:
+    name: devcontainer
+

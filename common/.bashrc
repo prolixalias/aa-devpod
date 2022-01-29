@@ -162,7 +162,7 @@ fi
 # this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
 function masterless() {
   export WORKING_DIR="/workspace"
-  export ENVIRONMENT_DIR="/etc/puppetlabs/code/environments"
+  # export ENVIRONMENT_DIR="/etc/puppetlabs/code/environments"
   export FACTER_localdev=true
   export FACTER_aa_datacenter=${1}  
   export FACTER_role="roles::${2}"

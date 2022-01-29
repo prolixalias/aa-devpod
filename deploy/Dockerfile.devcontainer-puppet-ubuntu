@@ -1,38 +1,50 @@
+###############
+#
+#  ARG OS_RELEASE="bionic"
+#  ARG OS_RELEASE="focal"
+#  ARG OS_RELEASE="hirsute"
+#  ARG OS_RELEASE="jammy"
+#
+###############
 
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-focal AS base
+ARG OS_RELEASE
+
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-${OS_RELEASE} AS base
 
 ENV LC_ALL="C.UTF-8"
 ENV LANG="C.UTF-8"
 ENV DEBIAN_FRONTEND="noninteractive"
 
+ARG OS_RELEASE
 ARG USER_NAME="vscode"
 ARG USER_UID="1000"
 ARG USER_GID="1000"
-ARG OS_PACKAGES="bat build-essential curl git iputils-ping language-pack-en software-properties-common sudo vim"
+ARG OS_PACKAGES="build-essential curl git iputils-ping language-pack-en software-properties-common sudo vim"
+ARG PUPPET_RELEASE="7"
 ARG PUPPET_PACKAGES="puppet-bolt puppet-agent hiera pdk"
-ARG GEMS="puppet-lint puppet-strings r10k yard"
+ARG PUPPET_GEMS="puppet-lint puppet-strings r10k yard"
 
 RUN \
 unset DISPLAY && \
-/usr/bin/sed -i 's http://archive.ubuntu.com/ubuntu/ mirror://mirrors.ubuntu.com/mirrors.txt ' /etc/apt/sources.list && \
+/bin/sed -i 's http://archive.ubuntu.com/ubuntu/ mirror://mirrors.ubuntu.com/mirrors.txt ' /etc/apt/sources.list && \
 /usr/bin/apt update -y && \
 /usr/bin/apt install -y ${OS_PACKAGES} && \
-/usr/bin/curl -O https://apt.puppet.com/puppet-tools-release-focal.deb && \
-/usr/bin/curl -O https://apt.puppet.com/puppet7-release-focal.deb && \
-/usr/bin/dpkg -i puppet-tools-release-focal.deb && \
-/usr/bin/dpkg -i puppet7-release-focal.deb && \
-/usr/bin/rm -f puppet-tools-release-focal.deb puppet7-release-focal.deb && \
+/usr/bin/curl -O https://apt.puppet.com/puppet-tools-release-${OS_RELEASE}.deb && \
+/usr/bin/curl -O https://apt.puppet.com/puppet${PUPPET_RELEASE}-release-${OS_RELEASE}.deb && \
+/usr/bin/dpkg -i puppet-tools-release-${OS_RELEASE}.deb && \
+/usr/bin/dpkg -i puppet${PUPPET_RELEASE}-release-${OS_RELEASE}.deb && \
+/bin/rm -f puppet-tools-release-${OS_RELEASE}.deb puppet${PUPPET_RELEASE}-release-${OS_RELEASE}.deb && \
 /usr/bin/apt update && \
 /usr/bin/apt install -y ${PUPPET_PACKAGES} && \
-/usr/bin/ln -s /opt/puppetlabs/bin/puppet /usr/local/bin/puppet && \
-/usr/bin/ln -s /opt/puppetlabs/puppet/bin/r10k /usr/local/bin/r10k && \
+/bin/ln -s /opt/puppetlabs/bin/puppet /usr/local/bin/puppet && \
+/bin/ln -s /opt/puppetlabs/puppet/bin/r10k /usr/local/bin/r10k && \
 # /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
 # /usr/sbin/useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USER_NAME} && \
 /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
 /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
-/opt/puppetlabs/puppet/bin/gem install ${GEMS} && \
+/opt/puppetlabs/puppet/bin/gem install ${PUPPET_GEMS} && \
 /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
-/usr/bin/rm -rf /var/lib/apt/lists/*
+/bin/rm -rf /var/lib/apt/lists/*
 
 FROM base AS user
 
@@ -42,7 +54,8 @@ USER ${USER_NAME}
 RUN \
 /bin/mkdir -p ~/.ssh ~/.config/puppet ~/.vim/autoload ~/.vim/bundle ~/.vim/colors && \
 /usr/bin/printf "---\ndisabled: true\n" > ~/.config/puppet/analytics.yml && \
-/usr/bin/ssh-keyscan -H github.com > ~/.ssh/known_hosts && \
+# /usr/bin/ssh-keyscan -H github.com >> ~/.ssh/known_hosts && \
+# /usr/bin/ssh-keyscan -H ghe.aa.com >> ~/.ssh/known_hosts && \
 /usr/bin/curl -LSso ~/.vim/colors/zenburn.vim https://raw.githubusercontent.com/jnurmine/Zenburn/master/colors/zenburn.vim && \
 /usr/bin/curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
 /usr/bin/git clone --depth 1 https://github.com/rodjek/vim-puppet.git ~/.vim/bundle/puppet && \
