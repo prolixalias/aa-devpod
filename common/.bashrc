@@ -159,19 +159,24 @@ if [[ ! -a ~/.git_configured ]]; then
   /usr/bin/touch ~/.git_configured
 fi
 
+# tmux pane name trick
+/usr/bin/printf '\033]2;%s\033\\' "$(eval source /etc/os-release && echo $PRETTY_NAME)"
+
 # this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
 function masterless() {
   export WORKING_DIR="/workspace"
-  # export ENVIRONMENT_DIR="/etc/puppetlabs/code/environments"
   export FACTER_localdev=true
-  export FACTER_aa_datacenter=${1}  
-  export FACTER_role="roles::${2}"
-  export DEBUG=${3}
+  export FACTER_role="roles::${1}"
+  export DEBUG=${2}
 
-  # this is handled with secrets in kubernetes  
-  if [[ ! -L /etc/puppetlabs/hiera/keys ]]; then
-    sudo mkdir -p /etc/puppetlabs/hiera && sudo ln -s ~/.puppetlabs/eyaml/keys /etc/puppetlabs/hiera/keys
+  if [[ ! -L /etc/puppetlabs/code/environments/production ]]; then
+    sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR} /etc/puppetlabs/code/environments/production
   fi
+
+  ### this is handled with secrets in kubernetes  
+  # if [[ ! -L /etc/puppetlabs/hiera/keys ]]; then
+  #   sudo mkdir -p /etc/puppetlabs/hiera && sudo ln -s ~/.puppetlabs/eyaml/keys /etc/puppetlabs/hiera/keys
+  # fi
 
   if [[ "${DEBUG}" == "debug" ]]; then
     APPLY="apply --debug"

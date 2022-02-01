@@ -1,5 +1,4 @@
 # configmap.r10k-config.yaml
-
 ---
 apiVersion: v1
 kind: ConfigMap

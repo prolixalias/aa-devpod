@@ -1,11 +1,11 @@
-# pod.puppet-ubuntu.yaml
+# pod.puppet-oraclelinux.yaml
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   namespace: devcontainer
-  name: puppet-ubuntu
+  name: puppet-oraclelinux
   labels:
     name: devcontainer
 spec:

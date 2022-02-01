@@ -1,0 +1,59 @@
+####################################################
+#
+#   base-oraclelinux
+#
+####################################################
+
+ARG OS_RELEASE
+
+FROM oraclelinux:${OS_RELEASE} AS base
+
+# ENV DEBIAN_FRONTEND="noninteractive"
+# ENV LC_ALL="C.UTF-8"
+# ENV LANG="C.UTF-8"
+ENV LC_ALL="en_US.UTF-8"
+ENV LANG="en_US.UTF-8"
+
+ARG OS_RELEASE
+ARG USER_NAME="localdev"
+ARG USER_UID="33333"
+ARG USER_GID="33333"
+ARG OS_PACKAGES="ca-certificates curl git jq less lsof man-db sudo time tmux tree unzip vim wget zip zsh"
+
+RUN \
+    unset DISPLAY && \
+    echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf && \
+    echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf && \
+    /usr/bin/yum update -y && \
+    /usr/bin/yum install -y ${OS_PACKAGES} && \
+    # localectl set-locale LANG=en_US.UTF-8 && \
+    /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
+    # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
+    /usr/sbin/useradd -l --uid ${USER_UID} --gid ${USER_GID} -m ${USER_NAME} && \
+    /usr/sbin/usermod -s $(which bash) ${USER_NAME} && \
+    /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
+    /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
+    /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
+    /usr/bin/yum clean all
+
+FROM base AS user
+
+USER ${USER_NAME}
+
+RUN \
+    /bin/mkdir -p ~/.ssh ~/.config/puppet ~/.vim/autoload ~/.vim/bundle ~/.vim/colors && \
+    /usr/bin/printf "---\ndisabled: true\n" > ~/.config/puppet/analytics.yml && \
+    /usr/bin/curl -LSso ~/.vim/colors/zenburn.vim https://raw.githubusercontent.com/jnurmine/Zenburn/master/colors/zenburn.vim && \
+    /usr/bin/curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
+    /usr/bin/git clone --depth 1 https://github.com/rodjek/vim-puppet.git ~/.vim/bundle/puppet && \
+    /usr/bin/git clone --depth 1 https://github.com/vim-syntastic/syntastic.git ~/.vim/bundle/syntastic
+
+COPY common/.vimrc /home/${USER_NAME}/.vimrc
+COPY common/.bashrc /home/${USER_NAME}/.bashrc
+
+USER root
+
+RUN \
+    /bin/chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
+
+ENTRYPOINT /usr/bin/bash

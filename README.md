@@ -2,7 +2,7 @@
 Automation-centric devcontainers for use with VSCode
 ## reference links
 
-| Link      | Description |
+| Link | Description |
 | ----------- | ----------- |
 | [Rancher Desktop](https://rancherdesktop.io)| Kubernetes and container management |
 | [Microsoft repos](https://github.com/microsoft/vscode-dev-containers) | Microsoft devcontainer repos/documentation on GitHub |
@@ -11,36 +11,55 @@ Automation-centric devcontainers for use with VSCode
 | [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) | Extension that allows remote development |
 | [Puppet extension](https://marketplace.visualstudio.com/items?itemName=puppet.puppet-vscode) | Extension with Puppet linting, syntactic highlighting and other useful tidbits |
 | [Kubernetes debugging](https://github.com/Azure/vscode-kubernetes-tools/blob/master/debug-on-kubernetes.md) | Debugging in VSCode on Kubernetes |
+| []() | |
 
 ## kubernetes
 ### :sparkles: images
-#### [containerd](https://containerd.io)
-##### build bionic
+#### [containerd](https://containerd.io) - Linux/MacOS, Rancher Desktop
+##### build base images (push manually with auth from k8s)
+###### ubuntu
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=bionic -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
+for OS_RELEASE in bionic focal jammy; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
+done
 ```
-##### build focal
+###### oracle linux
+  > *NOTE: vscode remote container not supported on 6*
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=focal -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
+for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
+done
 ```
-##### build jammy (future use, not implemented)
+##### build puppet images
+###### ubuntu
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=jammy -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
+for OS_RELEASE in bionic focal; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
+done
 ```
-#### [moby](https://mobyproject.org)
-##### build bionic
-```shell
-docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
-```
-##### build focal
-```shell
-docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
-```
-##### build jammy (future use, not implemented)
-```shell
-docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
-```
+  > *NOTE: `pdk` and `bolt` packages not implemented for bionic with AARCH64*
 
+  > *NOTE: puppet-rolled packages for jammy expected mid-April 2022*
+###### oracle linux
+```shell
+for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
+done
+```
+  > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
+#### [moby](https://mobyproject.org) - Windows, Docker Desktop (deprecated)
+##### build bionic
+```shell
+docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-bionic .
+```
+##### build focal
+```shell
+docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-focal .
+```
+##### build jammy (future use, not implemented)
+```shell
+docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-jammy .
+```
 ##### add local-path storage
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
@@ -59,10 +78,10 @@ kubectl apply -f ./deploy/base/configmap.r10k-config.yaml
 ```
 ### :sparkles: secrets
 #### prerequisite keypair
-> *NOTE: add resulting public key to GHE, etc*
 ```shell
 ssh-keygen -t ed25519 -a 100
 ```
+> *NOTE: add resulting public key to GHE, etc*
 #### create
 ```shell
 /usr/local/bin/op create document secret.ssh-egress.yaml --vault automation
@@ -79,31 +98,36 @@ ssh-keygen -t ed25519 -a 100
 ```shell
 kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
-### :sparkles: execs
-```direct shell access to container
-kubectl exec -ti puppet-ubuntu -- bash
-```
-### :sparkles: helm
+### :sparkles: helm (future use with puppetserver)
 #### add puppetserver chart
 ```shell
 helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 ```
-#### install puppetserver
+#### install puppetserver (future use)
 ```shell
 helm install puppetserver --namespace devcontainer puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
 ```
+## tmux tricks
+### pane - top status
+```shell
+tmux set -g pane-border-status top
+```
+### pane - bottom status
+```shell
+tmux set -g pane-border-status bottom
+```
+### pane - format
+```shell
+tmux set -g pane-border-format "#{pane_index} #{pane_current_command}"
+```
 ## docker compose (deprecated)
 ### :sparkles: usage
-
 `./compose/compose.sh [semver]`
 
 example:
 ```shell
 ./compose/compose.sh v0.0.0
 ```
-
 > *NOTE: if no tag/semver provided, resulting image(s) are tagged 'wip'*
-
 ## license
-
 [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause)
