@@ -23,12 +23,16 @@ spec:
         postStart:
           exec:
             command:
-            - /usr/bin/bash
+            - /bin/bash # several snowflake path variations between bionic/focal
             - -c
-            - /usr/bin/mkdir -p /home/vscode/.ssh && /usr/bin/chmod 700 /home/vscode/.ssh && /usr/bin/cp -aL /home/vscode/.ssh-egress/* /home/vscode/.ssh && /usr/bin/chmod 600 /home/vscode/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/vscode/.ssh/known_hosts /home/vscode/.ssh/id_ed25519.pub
+            - /bin/mkdir -p /home/vscode/.ssh && /bin/chmod 700 /home/vscode/.ssh && /bin/cp -aL /home/vscode/.ssh-egress/* /home/vscode/.ssh && /bin/chmod 600 /home/vscode/.ssh/id_ed25519 && /bin/chmod 644 /home/vscode/.ssh/known_hosts /home/vscode/.ssh/id_ed25519.pub
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
+      capabilities:
+        add:
+          - NET_ADMIN
+          - SYS_PTRACE
     command: ["tail", "-f", "/dev/null"]
     volumeMounts:
       - mountPath: /workspace
@@ -54,8 +58,6 @@ spec:
       requests:
         memory: 1024Mi
         cpu: "1"
-  
-  
   - image: mcr-devcontainer-puppet-ubuntu-focal # TODO: figure out how to accomoplish with kustomize
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
@@ -65,12 +67,16 @@ spec:
         postStart:
           exec:
             command:
-            - /usr/bin/bash
+            - /usr/bin/bash # # several snowflake path variations between bionic/focal
             - -c
             - /usr/bin/mkdir -p /home/vscode/.ssh && /usr/bin/chmod 700 /home/vscode/.ssh && /usr/bin/cp -aL /home/vscode/.ssh-egress/* /home/vscode/.ssh && /usr/bin/chmod 600 /home/vscode/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/vscode/.ssh/known_hosts /home/vscode/.ssh/id_ed25519.pub
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
+      capabilities:
+        add:
+          - NET_ADMIN
+          - SYS_PTRACE
     command: ["tail", "-f", "/dev/null"]
     volumeMounts:
       - mountPath: /workspace

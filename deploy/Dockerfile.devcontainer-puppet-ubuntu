@@ -2,7 +2,6 @@
 #
 #  ARG OS_RELEASE="bionic"
 #  ARG OS_RELEASE="focal"
-#  ARG OS_RELEASE="hirsute"
 #  ARG OS_RELEASE="jammy"
 #
 ###############

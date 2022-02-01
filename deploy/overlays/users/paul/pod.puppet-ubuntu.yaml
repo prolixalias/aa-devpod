@@ -13,7 +13,7 @@ spec:
     - name: code-volume
       hostPath:
         # LINUX/MACOS: location of repo on the host we're launching from:
-        path: /Users/ptalbot/Documents/sandbox/control-repo_fervid
+        path: /Users/ptalbot/Documents/sandbox/lab-control-repo
         # WINDOWS: it's COMPLICATED:
         # - bind mount on the WSL2 image:
         #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
