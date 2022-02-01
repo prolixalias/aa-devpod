@@ -1,0 +1,47 @@
+####################################################
+#
+#   puppet-oraclelinux
+#
+####################################################
+
+ARG OS_RELEASE
+
+FROM prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} AS builder
+
+ENV LC_ALL="C.UTF-8"
+ENV LANG="C.UTF-8"
+
+ARG OS_RELEASE
+ARG PUPPET_RELEASE
+ARG USER_NAME="localdev"
+ARG PUPPET_PACKAGES="puppet-bolt puppet-agent hiera pdk"
+ARG PUPPET_GEMS="puppet-lint puppet-strings r10k yard"
+
+RUN \
+    unset DISPLAY && \
+    # localectl set-locale LANG=en_US.UTF-8 && \
+    /usr/bin/curl -O https://yum.puppet.com/puppet-tools-release-el-${OS_RELEASE}.noarch.rpm && \
+    /usr/bin/curl -O https://yum.puppet.com/puppet${PUPPET_RELEASE}-release-el-${OS_RELEASE}.noarch.rpm && \
+    /bin/rpm -i puppet-tools-release-el-${OS_RELEASE}.noarch.rpm && \
+    /bin/rpm -i puppet${PUPPET_RELEASE}-release-el-${OS_RELEASE}.noarch.rpm && \
+    /bin/rm -f puppet${PUPPET_RELEASE}-release-el-${OS_RELEASE}.noarch.rpm puppet-tools-release-el-${OS_RELEASE}.noarch.rpm && \
+    /usr/bin/yum update -y && \
+    /usr/bin/yum install -y ${PUPPET_PACKAGES} && \
+    /bin/ln -s /opt/puppetlabs/bin/puppet /usr/local/bin/puppet && \
+    /bin/ln -s /opt/puppetlabs/puppet/bin/r10k /usr/local/bin/r10k && \
+    /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
+    /usr/sbin/useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USER_NAME} && \
+    /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
+    /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
+    /opt/puppetlabs/puppet/bin/gem install ${GEMS} && \
+    /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
+    /usr/bin/yum clean all && \
+    /bin/rm -rf /var/cache/yum && \
+    /bin/rm -f /var/lib/rpm/__db* && \
+    /usr/bin/rpmdb --rebuilddb
+
+FROM builder AS user
+
+USER ${USER_NAME}
+
+ENTRYPOINT /usr/bin/bash

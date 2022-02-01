@@ -2,7 +2,7 @@
 Automation-centric devcontainers for use with VSCode
 ## reference links
 
-| Link      | Description |
+| Link | Description |
 | ----------- | ----------- |
 | [Rancher Desktop](https://rancherdesktop.io)| Kubernetes and container management |
 | [Microsoft repos](https://github.com/microsoft/vscode-dev-containers) | Microsoft devcontainer repos/documentation on GitHub |
@@ -11,36 +11,64 @@ Automation-centric devcontainers for use with VSCode
 | [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) | Extension that allows remote development |
 | [Puppet extension](https://marketplace.visualstudio.com/items?itemName=puppet.puppet-vscode) | Extension with Puppet linting, syntactic highlighting and other useful tidbits |
 | [Kubernetes debugging](https://github.com/Azure/vscode-kubernetes-tools/blob/master/debug-on-kubernetes.md) | Debugging in VSCode on Kubernetes |
+| []() | |
 
 ## kubernetes
 ### :sparkles: images
 #### [containerd](https://containerd.io) - Linux/MacOS, Rancher Desktop
-##### build bionic
+##### build+push base images
+###### ubuntu
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=bionic -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
+for OS_RELEASE in bionic focal jammy; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
+done
 ```
-> *NOTE: packages for `pdk` and `bolt` not supported with bionic on AARCH64*
-##### build focal
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=focal -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
+for OS_RELEASE in bionic focal jammy; do
+  nerdctl -n k8s.io push prolixalias/devcontainer-base-ubuntu:${OS_RELEASE}
+done
 ```
-##### build jammy (future use, not implemented)
+###### oracle linux
+  > *NOTE: vscode remote container not supported on 6*
 ```shell
-nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=jammy -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
+for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
+done
 ```
-> *NOTE: packages expected be supported for `pdk` and `bolt` with jammy on AARCH64*
+```shell
+for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io push prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE}
+done
+```
+##### build puppet images
+###### ubuntu
+```shell
+for OS_RELEASE in bionic focal; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
+done
+```
+  > *NOTE: `pdk` and `bolt` packages not implemented for bionic with AARCH64*
+
+  > *NOTE: puppet-rolled packages for jammy expected mid-April 2022*
+###### oracle linux
+```shell
+for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
+done
+```
+  > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
 #### [moby](https://mobyproject.org) - Windows, Docker Desktop
 ##### build bionic
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-bionic .
+docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-bionic .
 ```
 ##### build focal
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-focal .
+docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-focal .
 ```
 ##### build jammy (future use, not implemented)
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t mcr-devcontainer-puppet-ubuntu-jammy .
+docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-jammy .
 ```
 ##### add local-path storage
 ```shell
