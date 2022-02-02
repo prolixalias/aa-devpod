@@ -11,7 +11,7 @@ FROM ubuntu:${OS_RELEASE} AS base
 ENV DEBIAN_FRONTEND="noninteractive"
 #ENV LC_ALL="C.UTF-8"
 #ENV LANG="C.UTF-8"
-ENV LC_ALL="en_US.UTF-8"
+# ENV LC_ALL="en_US.UTF-8"
 ENV LANG="en_US.UTF-8"
 
 ARG OS_RELEASE
@@ -31,7 +31,7 @@ RUN \
     rm -rf /var/lib/apt/lists/* && \
     /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
     # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-    useradd -l -u ${USER_UID} -G sudo -md /home/${USER_NAME} -s /bin/bash -p ${USER_NAME} ${USER_NAME} && \
+    useradd -l -u ${USER_UID} -G ${USER_NAME} -md /home/${USER_NAME} -s /bin/bash -p ${USER_NAME} ${USER_NAME} && \
     # # passwordless 'sudo' group
     # sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers && \
     usermod -s $(which zsh) ${USER_NAME} && \
