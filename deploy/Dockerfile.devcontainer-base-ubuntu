@@ -29,6 +29,7 @@ RUN \
     locale-gen en_US.UTF-8 && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* && \
+    /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
     # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
     useradd -l -u ${USER_UID} -G sudo -md /home/${USER_NAME} -s /bin/bash -p ${USER_NAME} ${USER_NAME} && \
     # # passwordless 'sudo' group
