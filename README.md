@@ -35,7 +35,7 @@ done
 ##### build puppet images
 ###### ubuntu
 ```shell
-for OS_RELEASE in bionic focal jammy; do
+for OS_RELEASE in bionic focal; do
   nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} . &&
 done
 ```
