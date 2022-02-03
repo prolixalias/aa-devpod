@@ -1,11 +1,11 @@
-# pod.puppet-ubuntu.yaml
+# pod.puppet-oraclelinux.yaml
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   namespace: devcontainer
-  name: puppet-ubuntu
+  name: puppet-oraclelinux
   labels:
     name: devcontainer
 spec:
@@ -14,10 +14,10 @@ spec:
     runAsGroup: 1000
     fsGroup: 1000
   containers:
-  - image: devcontainer-puppet-ubuntu:bionic # TODO: figure out how to accomoplish with kustomize
+  - image: devcontainer-puppet-oraclelinux:7 # TODO: figure out how to accomoplish with kustomize
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
-    name: puppet-ubuntu-bionic
+    name: puppet-oraclelinux-7
     # https://github.com/kubernetes/kubernetes/issues/34982
     lifecycle:
         postStart:
@@ -58,10 +58,10 @@ spec:
       requests:
         memory: 1024Mi
         cpu: "1"
-  - image: devcontainer-puppet-ubuntu:focal # TODO: figure out how to accomoplish with kustomize
+  - image: devcontainer-puppet-oraclelinux:8 # TODO: figure out how to accomoplish with kustomize
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
-    name: puppet-ubuntu-focal
+    name: puppet-oraclelinux-8
     # https://github.com/kubernetes/kubernetes/issues/34982
     lifecycle:
         postStart:
