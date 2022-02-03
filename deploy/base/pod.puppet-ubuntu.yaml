@@ -102,6 +102,50 @@ spec:
       requests:
         memory: 1024Mi
         cpu: "1"
+  - image: devcontainer-puppet-ubuntu:jammy # TODO: figure out how to accomoplish with kustomize
+    # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+    imagePullPolicy: Never
+    name: puppet-ubuntu-jammy
+    # https://github.com/kubernetes/kubernetes/issues/34982
+    lifecycle:
+        postStart:
+          exec:
+            command:
+            - /bin/bash # several snowflake path variations between bionic/focal
+            - -c
+            - /bin/mkdir -p /home/vscode/.ssh && /bin/chmod 700 /home/vscode/.ssh && /bin/cp -aL /home/vscode/.ssh-egress/* /home/vscode/.ssh && /bin/chmod 600 /home/vscode/.ssh/id_ed25519 && /bin/chmod 644 /home/vscode/.ssh/known_hosts /home/vscode/.ssh/id_ed25519.pub
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        add:
+          - NET_ADMIN
+          - SYS_PTRACE
+    command: ["tail", "-f", "/dev/null"]
+    volumeMounts:
+      - mountPath: /workspace
+        name: code-volume
+      - mountPath: /home/vscode/.cache
+        name: cache-volume
+        readOnly: true
+      - name: ssh-egress
+        # https://github.com/kubernetes/kubernetes/issues/34982
+        mountPath: "/home/vscode/.ssh-egress"
+        readOnly: true
+      - name: eyaml-keys
+        # https://github.com/kubernetes/kubernetes/issues/34982
+        mountPath: "..." # placeholder
+        readOnly: true
+      - name: r10k-config
+        mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
+        readOnly: true
+    resources:
+      limits:
+        memory: 2048Mi
+        cpu: "1"
+      requests:
+        memory: 1024Mi
+        cpu: "1"
   volumes:
     - name: code-volume
       hostPath:
