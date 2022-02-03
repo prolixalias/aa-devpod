@@ -1,4 +1,4 @@
-# pod-puppet-focal.yml
+# pod.puppet-ubuntu.yaml
 
 ---
 apiVersion: v1

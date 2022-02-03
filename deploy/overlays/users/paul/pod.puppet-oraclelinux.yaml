@@ -1,4 +1,4 @@
-# pod-puppet-focal.yml
+# pod.puppet-oraclelinux.yaml
 
 ---
 apiVersion: v1
