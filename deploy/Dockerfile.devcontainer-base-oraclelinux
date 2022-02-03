@@ -32,7 +32,6 @@ RUN \
     /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
     /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
     /usr/bin/yum clean all
-
 FROM base AS user
 
 USER ${USER_NAME}
