@@ -20,11 +20,7 @@ Automation-centric devcontainers for use with VSCode
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal jammy; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
-done
-```
-```shell
-for OS_RELEASE in bionic focal jammy; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} . && \
   nerdctl -n k8s.io push prolixalias/devcontainer-base-ubuntu:${OS_RELEASE}
 done
 ```

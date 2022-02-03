@@ -18,7 +18,7 @@ ARG OS_RELEASE
 ARG USER_NAME="localdev"
 ARG USER_UID="33333"
 ARG USER_GID="33333"
-ARG OS_PACKAGES="curl fish git htop jq less locales lsof man-db multitail software-properties-common ssl-cert sudo time tmux tree unzip vim wget zip zsh"
+ARG OS_PACKAGES="ca-certificates curl fish git htop jq less locales lsof man-db multitail software-properties-common ssl-cert sudo time tmux tree unzip vim wget zip zsh"
 
 RUN \
     unset DISPLAY && \
