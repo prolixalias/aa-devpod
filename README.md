@@ -28,11 +28,7 @@ done
   > *NOTE: vscode remote container not supported on 6*
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
-done
-```
-```shell
-for OS_RELEASE in 7 8; do
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} . && \
   nerdctl -n k8s.io push prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE}
 done
 ```

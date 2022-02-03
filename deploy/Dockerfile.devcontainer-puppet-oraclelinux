@@ -14,8 +14,6 @@ ENV LANG="C.UTF-8"
 ARG OS_RELEASE
 ARG PUPPET_RELEASE
 ARG USER_NAME="localdev"
-ARG USER_UID="33333"
-ARG USER_GID="33333"
 ARG PUPPET_PACKAGES="puppet-bolt puppet-agent hiera pdk"
 ARG PUPPET_GEMS="puppet-lint puppet-strings r10k yard"
 
