@@ -14,6 +14,8 @@ ENV LANG="C.UTF-8"
 ARG OS_RELEASE
 ARG PUPPET_RELEASE
 ARG USER_NAME="localdev"
+ARG USER_UID="33333"
+ARG USER_GID="33333"
 ARG PUPPET_PACKAGES="puppet-bolt puppet-agent hiera pdk"
 ARG PUPPET_GEMS="puppet-lint puppet-strings r10k yard"
 
@@ -29,10 +31,6 @@ RUN \
     /usr/bin/yum install -y ${PUPPET_PACKAGES} && \
     /bin/ln -s /opt/puppetlabs/bin/puppet /usr/local/bin/puppet && \
     /bin/ln -s /opt/puppetlabs/puppet/bin/r10k /usr/local/bin/r10k && \
-    /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
-    /usr/sbin/useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USER_NAME} && \
-    /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
-    /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
     /opt/puppetlabs/puppet/bin/gem install ${GEMS} && \
     /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
     /usr/bin/yum clean all && \
