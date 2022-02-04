@@ -1,4 +1,4 @@
-# pod-puppet-focal.yml
+# pod.puppet-ubuntu.yaml
 
 ---
 apiVersion: v1
@@ -13,7 +13,7 @@ spec:
     - name: code-volume
       hostPath:
         # LINUX/MACOS: location of repo on the host we're launching from:
-        path: /Users/devi/Documents/sandbox/lab-control-repo
+        path: /Users/ptalbot/Documents/sandbox/Puppet Engagements/AA/lab-control-repo
         # WINDOWS: it's COMPLICATED:
         # - bind mount on the WSL2 image:
         #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python

@@ -26,7 +26,7 @@ RUN \
     apt update -y && \
     apt upgrade -qqy && \
     apt install -qqy ${OS_PACKAGES} && \
-    locale-gen en_US.UTF-8 && \
+    # locale-gen en_US.UTF-8 && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* && \
     /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \

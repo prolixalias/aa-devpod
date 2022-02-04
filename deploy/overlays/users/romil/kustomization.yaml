@@ -6,4 +6,5 @@ kind: Kustomization
 resources:
   - ../../../base
 patchesStrategicMerge:
+  - pod.puppet-oraclelinux.yaml
   - pod.puppet-ubuntu.yaml
