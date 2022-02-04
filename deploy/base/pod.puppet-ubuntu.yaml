@@ -51,10 +51,10 @@ spec:
     resources:
       limits:
         memory: 2048Mi
-        cpu: ".5"
+        cpu: "1"
       requests:
         memory: 1024Mi
-        cpu: ".5"
+        cpu: "1"
   - image: devcontainer-puppet-ubuntu:focal
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
@@ -91,10 +91,10 @@ spec:
     resources:
       limits:
         memory: 2048Mi
-        cpu: ".5"
+        cpu: "1"
       requests:
         memory: 1024Mi
-        cpu: ".5"
+        cpu: "1"
   - image: devcontainer-puppet-ubuntu:jammy
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
@@ -131,10 +131,10 @@ spec:
     resources:
       limits:
         memory: 2048Mi
-        cpu: ".5"
+        cpu: "1"
       requests:
         memory: 1024Mi
-        cpu: ".5"
+        cpu: "1"
   volumes:
     - name: code-volume
       hostPath:

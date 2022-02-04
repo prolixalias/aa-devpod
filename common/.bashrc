@@ -166,6 +166,10 @@ function masterless() {
   export FACTER_role="roles::${1}"
   export DEBUG=${2}
 
+  if [[ ! -L /etc/puppetlabs/code/environments/production ]]; then
+    sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR} /etc/puppetlabs/code/environments/production
+  fi
+
   ### this is handled with secrets in kubernetes  
   # if [[ ! -L /etc/puppetlabs/hiera/keys ]]; then
   #   sudo mkdir -p /etc/puppetlabs/hiera && sudo ln -s ~/.puppetlabs/eyaml/keys /etc/puppetlabs/hiera/keys
