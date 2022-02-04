@@ -55,9 +55,9 @@ RUN \
 COPY common/.vimrc /home/${USER_NAME}/.vimrc
 COPY common/.bashrc /home/${USER_NAME}/.bashrc
 
-RUN \
-    /usr/bin/sudo /bin/chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
-
 USER root
+
+RUN \
+    /bin/chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 
 ENTRYPOINT /usr/bin/bash

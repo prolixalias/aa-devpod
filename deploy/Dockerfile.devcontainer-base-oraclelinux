@@ -18,7 +18,7 @@ ARG OS_RELEASE
 ARG USER_NAME="localdev"
 ARG USER_UID="33333"
 ARG USER_GID="33333"
-ARG OS_PACKAGES="curl git sudo tmux vim zsh"
+ARG OS_PACKAGES="ca-certificates curl fish git htop jq less locales lsof man-db multitail ssl-cert sudo time tmux tree unzip vim wget zip zsh"
 
 RUN \
     unset DISPLAY && \
@@ -47,9 +47,9 @@ RUN \
 COPY common/.vimrc /home/${USER_NAME}/.vimrc
 COPY common/.bashrc /home/${USER_NAME}/.bashrc
 
-RUN \
-    /usr/bin/sudo /bin/chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
-
 USER root
+
+RUN \
+    /bin/chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 
 ENTRYPOINT /usr/bin/bash
