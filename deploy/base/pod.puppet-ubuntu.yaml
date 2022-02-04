@@ -10,11 +10,11 @@ metadata:
     name: devcontainer
 spec:
   securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
+    runAsUser: 33333
+    runAsGroup: 33333
+    fsGroup: 33333
   containers:
-  - image: devcontainer-puppet-ubuntu:bionic # TODO: figure out how to accomoplish with kustomize
+  - image: devcontainer-puppet-ubuntu:bionic
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
     name: puppet-ubuntu-bionic
@@ -27,8 +27,8 @@ spec:
             - -c
             - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
     securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
+      runAsUser: 33333
+      runAsGroup: 33333
       capabilities:
         add:
           - NET_ADMIN
@@ -46,10 +46,7 @@ spec:
         readOnly: true
       - name: eyaml-keys
         # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "..." # placeholder
-        readOnly: true
-      - name: r10k-config
-        mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
+        mountPath: "." # placeholder
         readOnly: true
     resources:
       limits:
@@ -58,7 +55,7 @@ spec:
       requests:
         memory: 1024Mi
         cpu: ".5"
-  - image: devcontainer-puppet-ubuntu:focal # TODO: figure out how to accomoplish with kustomize
+  - image: devcontainer-puppet-ubuntu:focal
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
     name: puppet-ubuntu-focal
@@ -67,12 +64,12 @@ spec:
         postStart:
           exec:
             command:
-            - /usr/bin/bash # # several snowflake path variations between bionic/focal
+            - /usr/bin/bash # several snowflake path variations between bionic/focal
             - -c
             - /usr/bin/mkdir -p /home/localdev/.ssh && /usr/bin/chmod 700 /home/localdev/.ssh && /usr/bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /usr/bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
     securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
+      runAsUser: 33333
+      runAsGroup: 33333
       capabilities:
         add:
           - NET_ADMIN
@@ -88,10 +85,6 @@ spec:
         # https://github.com/kubernetes/kubernetes/issues/34982
         mountPath: "/home/localdev/.ssh-egress"
         readOnly: true
-      - name: eyaml-keys
-        # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "..." # placeholder
-        readOnly: true
       - name: r10k-config
         mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
         readOnly: true
@@ -102,7 +95,7 @@ spec:
       requests:
         memory: 1024Mi
         cpu: ".5"
-  - image: devcontainer-puppet-ubuntu:jammy # TODO: figure out how to accomoplish with kustomize
+  - image: devcontainer-puppet-ubuntu:jammy
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
     name: puppet-ubuntu-jammy
@@ -115,8 +108,8 @@ spec:
             - -c
             - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
     securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
+      runAsUser: 33333
+      runAsGroup: 33333
       capabilities:
         add:
           - NET_ADMIN
@@ -131,10 +124,6 @@ spec:
       - name: ssh-egress
         # https://github.com/kubernetes/kubernetes/issues/34982
         mountPath: "/home/localdev/.ssh-egress"
-        readOnly: true
-      - name: eyaml-keys
-        # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "..." # placeholder
         readOnly: true
       - name: r10k-config
         mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
