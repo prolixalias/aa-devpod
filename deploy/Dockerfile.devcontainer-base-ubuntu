@@ -34,7 +34,7 @@ RUN \
     useradd -l -u ${USER_UID} -g ${USER_NAME} -md /home/${USER_NAME} -s /bin/bash -p ${USER_NAME} ${USER_NAME} && \
     # # passwordless 'sudo' group
     # sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers && \
-    usermod -s $(which zsh) ${USER_NAME} && \
+    usermod -s $(which bash) ${USER_NAME} && \
     /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
     /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
     /bin/rm -rf /var/lib/apt/lists/*

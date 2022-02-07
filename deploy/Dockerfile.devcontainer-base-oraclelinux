@@ -28,10 +28,12 @@ RUN \
     /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
     # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
     /usr/sbin/useradd -l --uid ${USER_UID} --gid ${USER_GID} -m ${USER_NAME} && \
+    /usr/sbin/usermod -s $(which bash) ${USER_NAME} && \
     /bin/echo ${USER_NAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER_NAME} && \
     /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
     /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
     /usr/bin/yum clean all
+
 FROM base AS user
 
 USER ${USER_NAME}
