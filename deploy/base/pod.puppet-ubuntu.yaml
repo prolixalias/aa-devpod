@@ -135,48 +135,48 @@ spec:
   #     requests:
   #       memory: 1024Mi
   #       cpu: ".75"
-  # volumes:
-  #   - name: code-volume
-  #     hostPath:
-  #       # LINUX/MACOS: location of repo on the host we're launching from:
-  #       path: .
-  #       # WINDOWS: it's COMPLICATED:
-  #       # - bind mount on the WSL2 image:
-  #       #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
-  #       # - this maps to:
-  #       #   /run/desktop/mnt/host/wsl/... for docker and kubernetes
-  #       #   see https://github.com/docker/for-win/issues/5325#issuecomment-567594291
-  #       #   (on docker-desktop wsl2 image, I can only see it as /mnt/host/wsl/... )
-  #       #path: /run/desktop/mnt/host/wsl/dbwriter_python
-  #       # this field is optional
-  #       type: Directory
-  #   - name: cache-volume
-  #     # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
-  #     # same as lifetime of the pod; OK for caching of package installs and so on
-  #     emptyDir: {}       
-  #   - name: ssh-egress
-  #     secret:
-  #       secretName: ssh-egress
-  #       defaultMode: 0600
-  #       items:
-  #       - key: id_ed25519
-  #         path: id_ed25519
-  #       - key: id_ed25519.pub
-  #         path: id_ed25519.pub
-  #       - key: known_hosts
-  #         path: known_hosts
-  #   - name: eyaml-keys
-  #     secret:
-  #       secretName: eyaml-keys
-  #       defaultMode: 0640
-  #       items:
-  #       - key: private_key.pkcs7.pem
-  #         path: private_key.pkcs7.pem
-  #       - key: public_key.pkcs7.pem
-  #         path: public_key.pkcs7.pem
-  #   - name: r10k-config
-  #     configMap:
-  #       name: r10k-config
+  volumes:
+    - name: code-volume
+      hostPath:
+        # LINUX/MACOS: location of repo on the host we're launching from:
+        path: .
+        # WINDOWS: it's COMPLICATED:
+        # - bind mount on the WSL2 image:
+        #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
+        # - this maps to:
+        #   /run/desktop/mnt/host/wsl/... for docker and kubernetes
+        #   see https://github.com/docker/for-win/issues/5325#issuecomment-567594291
+        #   (on docker-desktop wsl2 image, I can only see it as /mnt/host/wsl/... )
+        #path: /run/desktop/mnt/host/wsl/dbwriter_python
+        # this field is optional
+        type: Directory
+    - name: cache-volume
+      # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+      # same as lifetime of the pod; OK for caching of package installs and so on
+      emptyDir: {}       
+    - name: ssh-egress
+      secret:
+        secretName: ssh-egress
+        defaultMode: 0600
+        items:
+        - key: id_ed25519
+          path: id_ed25519
+        - key: id_ed25519.pub
+          path: id_ed25519.pub
+        - key: known_hosts
+          path: known_hosts
+    - name: eyaml-keys
+      secret:
+        secretName: eyaml-keys
+        defaultMode: 0640
+        items:
+        - key: private_key.pkcs7.pem
+          path: private_key.pkcs7.pem
+        - key: public_key.pkcs7.pem
+          path: public_key.pkcs7.pem
+    - name: r10k-config
+      configMap:
+        name: r10k-config
 
 # ---
 # apiVersion: v1
