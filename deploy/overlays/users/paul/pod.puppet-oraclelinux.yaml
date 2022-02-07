@@ -1,5 +1,4 @@
 # pod.puppet-oraclelinux.yaml
-
 ---
 apiVersion: v1
 kind: Pod
