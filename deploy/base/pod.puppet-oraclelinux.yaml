@@ -50,10 +50,10 @@ spec:
     resources:
       limits:
         memory: 2048Mi
-        cpu: "1"
+        cpu: ".75"
       requests:
         memory: 1024Mi
-        cpu: "1"
+        cpu: ".75"
   - image: devcontainer-puppet-oraclelinux:8
     # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
     imagePullPolicy: Never
@@ -90,10 +90,10 @@ spec:
     resources:
       limits:
         memory: 2048Mi
-        cpu: "1"
+        cpu: ".75"
       requests:
         memory: 1024Mi
-        cpu: "1"
+        cpu: ".75"
   volumes:
     - name: code-volume
       hostPath:
