@@ -36,7 +36,7 @@ done
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} . &&
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for bionic with AARCH64*
@@ -45,7 +45,7 @@ done
 ###### oracle linux
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} . &&
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
