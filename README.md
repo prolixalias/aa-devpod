@@ -118,7 +118,7 @@ tmux set -g pane-border-status bottom
 ```
 #### pane - synchronize
 ```shell
-:setw synchronize-panes
+setw synchronize-panes on
 ```
 ## docker compose (deprecated)
 ### :sparkles: usage
