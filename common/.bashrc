@@ -35,7 +35,9 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
+# set 256 colors for vim, among others but especially vim
+export TERM=xterm-256color
+
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
@@ -143,9 +145,6 @@ __bash_prompt() {
 }
 __bash_prompt
 export PROMPT_DIRTRIM=4
-
-# set 256 colors for vim, among others but especially vim
-export TERM=xterm-256color
 
 # setup git config with input from user on first launch
 if [[ ! -a ~/.git_configured ]]; then
