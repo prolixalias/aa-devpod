@@ -16,20 +16,18 @@ Automation-centric devcontainers for use with VSCode
 ## kubernetes
 ### :sparkles: images
 #### [containerd](https://containerd.io) - Linux/MacOS, Rancher Desktop
-##### build+push base images
+##### build base images (push manually with auth from k8s)
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal jammy; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} . && \
-  nerdctl -n k8s.io push prolixalias/devcontainer-base-ubuntu:${OS_RELEASE}
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
 done
 ```
 ###### oracle linux
   > *NOTE: vscode remote container not supported on 6*
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} . && \
-  nerdctl -n k8s.io push prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE}
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
 done
 ```
 ##### build puppet images
@@ -49,7 +47,7 @@ for OS_RELEASE in 7 8; do
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
-#### [moby](https://mobyproject.org) - Windows, Docker Desktop
+#### [moby](https://mobyproject.org) - Windows, Docker Desktop (deprecated)
 ##### build bionic
 ```shell
 docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-bionic .
@@ -108,6 +106,19 @@ helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 #### install puppetserver (future use)
 ```shell
 helm install puppetserver --namespace devcontainer puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
+```
+### :sparkles: tmux tricks
+#### pane - top status
+```shell
+tmux set -g pane-border-status top
+```
+#### pane - bottom status
+```shell
+tmux set -g pane-border-status bottom
+```
+#### pane - synchronize
+```shell
+setw synchronize-panes on
 ```
 ## docker compose (deprecated)
 ### :sparkles: usage

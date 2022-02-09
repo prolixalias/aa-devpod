@@ -35,7 +35,9 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
+# set 256 colors for vim, among others but especially vim
+export TERM=xterm-256color
+
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
@@ -144,9 +146,6 @@ __bash_prompt() {
 __bash_prompt
 export PROMPT_DIRTRIM=4
 
-# set 256 colors for vim, among others but especially vim
-export TERM=xterm-256color
-
 # setup git config with input from user on first launch
 if [[ ! -a ~/.git_configured ]]; then
   read -p "Full name for git commits: " name
@@ -158,6 +157,9 @@ if [[ ! -a ~/.git_configured ]]; then
   # /usr/bin/git config --global url."https://${token}@ghe.aa.com/".insteadOf "https://ghe.aa.com/" && \
   /usr/bin/touch ~/.git_configured
 fi
+
+# tmux pane name trick
+/usr/bin/printf '\033]2;%s\033\\' "$(eval source /etc/os-release && echo $PRETTY_NAME)"
 
 # this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
 function masterless() {
