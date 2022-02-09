@@ -8,5 +8,5 @@ metadata:
 data:
   .gitconfig: |-
     [user]
-    name = Mike Thomasson
-    email = michael.thomasson@aa.com
+      name = Mike Thomasson
+      email = michael.thomasson@aa.com

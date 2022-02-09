@@ -8,5 +8,5 @@ metadata:
 data:
   .gitconfig: |-
     [user]
-    name = Devi Saladi
-    email = devi.saladi@aa.com
+      name = Devi Saladi
+      email = devi.saladi@aa.com

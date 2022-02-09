@@ -8,5 +8,5 @@ metadata:
 data:
   .gitconfig: |-
     [user]
-    name = Romil Surti
-    email = romil.surti@aa.com
+      name = Romil Surti
+      email = romil.surti@aa.com

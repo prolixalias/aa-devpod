@@ -43,6 +43,9 @@ spec:
           # https://github.com/kubernetes/kubernetes/issues/34982
           mountPath: "/home/localdev/.ssh-egress"
           readOnly: true
+        - name: git-config
+          mountPath: "/home/localdev/.gitconfig"
+          readOnly: true
         - name: r10k-config
           mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
           readOnly: true
@@ -111,54 +114,33 @@ spec:
     - name: cache-volume
       # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
       # same as lifetime of the pod; OK for caching of package installs and so on
-<<<<<<< HEAD
-      emptyDir: {}       
-=======
       emptyDir: {}
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
     - name: ssh-egress
       secret:
         secretName: ssh-egress
         defaultMode: 0600
         items:
-<<<<<<< HEAD
-        - key: id_ed25519
-          path: id_ed25519
-        - key: id_ed25519.pub
-          path: id_ed25519.pub
-        - key: known_hosts
-          path: known_hosts
-=======
           - key: id_ed25519
             path: id_ed25519
           - key: id_ed25519.pub
             path: id_ed25519.pub
           - key: known_hosts
             path: known_hosts
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
     - name: eyaml-keys
       secret:
         secretName: eyaml-keys
         defaultMode: 0640
         items:
-<<<<<<< HEAD
-        - key: private_key.pkcs7.pem
-          path: private_key.pkcs7.pem
-        - key: public_key.pkcs7.pem
-          path: public_key.pkcs7.pem
-    - name: r10k-config
-      configMap:
-        name: r10k-config
-
-=======
           - key: private_key.pkcs7.pem
             path: private_key.pkcs7.pem
           - key: public_key.pkcs7.pem
             path: public_key.pkcs7.pem
+    - name: git-config
+      configMap:
+        name: git-config
     - name: r10k-config
       configMap:
         name: r10k-config
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
