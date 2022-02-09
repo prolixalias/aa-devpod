@@ -64,18 +64,6 @@ docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devc
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 ```
-### :sparkles: namespace creation
-```shell
-kubectl apply -f ./deploy/base/namespace.devcontainer.yaml
-```
-### :sparkles: switch context accordingly
-```shell
-kubectl config set-context $(kubectl config current-context) --namespace devcontainer
-```
-### :sparkles: configmap for r10k config
-```shell
-kubectl apply -f ./deploy/base/configmap.r10k-config.yaml
-```
 ### :sparkles: secrets
 #### prerequisite keypair
 ```shell
@@ -97,6 +85,10 @@ ssh-keygen -t ed25519 -a 100
 ### :sparkles: kustomize
 ```shell
 kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
+```
+### :sparkles: switch context accordingly
+```shell
+kubectl config set-context $(kubectl config current-context) --namespace devcontainer
 ```
 ### :sparkles: helm (future use with puppetserver)
 #### add puppetserver chart

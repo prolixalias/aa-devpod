@@ -1,5 +1,4 @@
 # pod.puppet-oraclelinux.yaml
-
 ---
 apiVersion: v1
 kind: Pod
@@ -16,11 +15,11 @@ spec:
         path: /Users/romilsurti/Git/lab-control-repo
         # WINDOWS: it's COMPLICATED:
         # - bind mount on the WSL2 image:
-        #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
+        #    sudo mount --bind /blah/blah/lab-control-repo /mnt/wsl/lab-control-repo
         # - this maps to:
         #   /run/desktop/mnt/host/wsl/... for docker and kubernetes
         #   see https://github.com/docker/for-win/issues/5325#issuecomment-567594291
         #   (on docker-desktop wsl2 image, I can only see it as /mnt/host/wsl/... )
-        #path: /run/desktop/mnt/host/wsl/dbwriter_python
+        #path: /run/desktop/mnt/host/wsl/lab-control-repo
         # this field is optional
         type: Directory

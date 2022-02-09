@@ -1,0 +1,12 @@
+# configmap.git-config.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: devcontainer
+  name: git-config
+data:
+  .gitconfig: |-
+    [user]
+    name = Paul Talbot
+    email = paul.talbot@aa.com

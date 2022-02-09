@@ -11,5 +11,5 @@ data:
     :cachedir: '/var/cache/r10k'
     :sources:
       :base:
-        remote: 'git@github.com:fervidus/control-repo_fervid.git'
+        remote: 'git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git'
         basedir: '/etc/puppetlabs/code/environments'

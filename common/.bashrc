@@ -65,14 +65,14 @@ else
 fi
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# # If this is an xterm set the title to user@host:dir
+# case "$TERM" in
+# xterm*|rxvt*)
+#     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#     ;;
+# *)
+#     ;;
+# esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -146,17 +146,17 @@ __bash_prompt() {
 __bash_prompt
 export PROMPT_DIRTRIM=4
 
-# setup git config with input from user on first launch
-if [[ ! -a ~/.git_configured ]]; then
-  read -p "Full name for git commits: " name
-  read -p "Email address for git commits: " email
-  # read -s -p "GitHub personal access token: " token
-  echo
-  /usr/bin/git config --global user.name ${name} && \
-  /usr/bin/git config --global user.email ${email} && \
-  # /usr/bin/git config --global url."https://${token}@ghe.aa.com/".insteadOf "https://ghe.aa.com/" && \
-  /usr/bin/touch ~/.git_configured
-fi
+# # setup git config with input from user on first launch
+# if [[ ! -a ~/.git_configured ]]; then
+#   read -p "Full name for git commits: " name
+#   read -p "Email address for git commits: " email
+#   # read -s -p "GitHub personal access token: " token
+#   echo
+#   /usr/bin/git config --global user.name ${name} && \
+#   /usr/bin/git config --global user.email ${email} && \
+#   # /usr/bin/git config --global url."https://${token}@ghe.aa.com/".insteadOf "https://ghe.aa.com/" && \
+#   /usr/bin/touch ~/.git_configured
+# fi
 
 # tmux pane name trick
 /usr/bin/printf '\033]2;%s\033\\' "$(eval source /etc/os-release && echo $PRETTY_NAME)"
