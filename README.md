@@ -116,7 +116,7 @@ tmux set -g pane-border-status top
 ```shell
 tmux set -g pane-border-status bottom
 ```
-#### pane - synchroniz
+#### pane - synchronize
 ```shell
 :setw synchronize-panes
 ```
