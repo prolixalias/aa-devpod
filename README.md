@@ -116,9 +116,9 @@ tmux set -g pane-border-status top
 ```shell
 tmux set -g pane-border-status bottom
 ```
-#### pane - format
+#### pane - synchroniz
 ```shell
-tmux set -g pane-border-format "#{pane_index} #{pane_current_command}"
+:setw synchronize-panes
 ```
 ## docker compose (deprecated)
 ### :sparkles: usage
