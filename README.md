@@ -107,16 +107,16 @@ helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 ```shell
 helm install puppetserver --namespace devcontainer puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
 ```
-## tmux tricks
-### pane - top status
+### :sparkles: tmux tricks
+#### pane - top status
 ```shell
 tmux set -g pane-border-status top
 ```
-### pane - bottom status
+#### pane - bottom status
 ```shell
 tmux set -g pane-border-status bottom
 ```
-### pane - format
+#### pane - format
 ```shell
 tmux set -g pane-border-format "#{pane_index} #{pane_current_command}"
 ```
