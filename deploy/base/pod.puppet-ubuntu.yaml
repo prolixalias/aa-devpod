@@ -13,129 +13,6 @@ spec:
     runAsGroup: 33333
     fsGroup: 33333
   containers:
-<<<<<<< HEAD
-  - image: devcontainer-puppet-ubuntu:bionic
-    # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
-    imagePullPolicy: Never
-    name: puppet-ubuntu-bionic
-    # https://github.com/kubernetes/kubernetes/issues/34982
-    lifecycle:
-        postStart:
-          exec:
-            command:
-            - /bin/bash # several snowflake path variations between bionic/focal
-            - -c
-            - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
-    securityContext:
-      runAsUser: 33333
-      runAsGroup: 33333
-      capabilities:
-        add:
-          - NET_ADMIN
-          - SYS_PTRACE
-    command: ["tail", "-f", "/dev/null"]
-    volumeMounts:
-      - mountPath: /workspace
-        name: code-volume
-      - mountPath: /home/localdev/.cache
-        name: cache-volume
-        readOnly: true
-      - name: ssh-egress
-        # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "/home/localdev/.ssh-egress"
-        readOnly: true
-      - name: eyaml-keys
-        # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "." # placeholder
-        readOnly: true
-    resources:
-      limits:
-        memory: 2048Mi
-        cpu: ".75"
-      requests:
-        memory: 1024Mi
-        cpu: ".75"
-  - image: devcontainer-puppet-ubuntu:focal
-    # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
-    imagePullPolicy: Never
-    name: puppet-ubuntu-focal
-    # https://github.com/kubernetes/kubernetes/issues/34982
-    lifecycle:
-        postStart:
-          exec:
-            command:
-            - /usr/bin/bash # several snowflake path variations between bionic/focal
-            - -c
-            - /usr/bin/mkdir -p /home/localdev/.ssh && /usr/bin/chmod 700 /home/localdev/.ssh && /usr/bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /usr/bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
-    securityContext:
-      runAsUser: 33333
-      runAsGroup: 33333
-      capabilities:
-        add:
-          - NET_ADMIN
-          - SYS_PTRACE
-    command: ["tail", "-f", "/dev/null"]
-    volumeMounts:
-      - mountPath: /workspace
-        name: code-volume
-      - mountPath: /home/localdev/.cache
-        name: cache-volume
-        readOnly: true
-      - name: ssh-egress
-        # https://github.com/kubernetes/kubernetes/issues/34982
-        mountPath: "/home/localdev/.ssh-egress"
-        readOnly: true
-      - name: r10k-config
-        mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
-        readOnly: true
-    resources:
-      limits:
-        memory: 2048Mi
-        cpu: ".75"
-      requests:
-        memory: 1024Mi
-        cpu: ".75"
-  # - image: devcontainer-puppet-ubuntu:jammy
-  #   # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
-  #   imagePullPolicy: Never
-  #   name: puppet-ubuntu-jammy
-  #   # https://github.com/kubernetes/kubernetes/issues/34982
-  #   lifecycle:
-  #       postStart:
-  #         exec:
-  #           command:
-  #           - /bin/bash # several snowflake path variations between bionic/focal
-  #           - -c
-  #           - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
-  #   securityContext:
-  #     runAsUser: 33333
-  #     runAsGroup: 33333
-  #     capabilities:
-  #       add:
-  #         - NET_ADMIN
-  #         - SYS_PTRACE
-  #   command: ["tail", "-f", "/dev/null"]
-  #   volumeMounts:
-  #     - mountPath: /workspace
-  #       name: code-volume
-  #     - mountPath: /home/localdev/.cache
-  #       name: cache-volume
-  #       readOnly: true
-  #     - name: ssh-egress
-  #       # https://github.com/kubernetes/kubernetes/issues/34982
-  #       mountPath: "/home/localdev/.ssh-egress"
-  #       readOnly: true
-  #     - name: r10k-config
-  #       mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
-  #       readOnly: true
-  #   resources:
-  #     limits:
-  #       memory: 2048Mi
-  #       cpu: ".75"
-  #     requests:
-  #       memory: 1024Mi
-  #       cpu: ".75"
-=======
     - image: devcontainer-puppet-ubuntu:bionic
       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
       imagePullPolicy: Never
@@ -216,7 +93,6 @@ spec:
         requests:
           memory: 1024Mi
           cpu: ".75"
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
   volumes:
     - name: code-volume
       hostPath:
@@ -259,10 +135,6 @@ spec:
     - name: r10k-config
       configMap:
         name: r10k-config
-<<<<<<< HEAD
-
-=======
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
@@ -274,8 +146,4 @@ spec:
 #   storageClassName: local-path # rancher-specific?
 #   resources:
 #     requests:
-<<<<<<< HEAD
 #       storage: 2Gi
-=======
-#       storage: 2Gi
->>>>>>> 1cb06cd75cf7c4d002698ce550ef8407e9519fea
