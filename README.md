@@ -64,6 +64,10 @@ docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devc
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 ```
+### :sparkles: kustomize
+```shell
+kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
+```
 ### :sparkles: secrets
 #### prerequisite keypair
 ```shell
@@ -81,10 +85,6 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op get document secret.ssh-egress.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
-```
-### :sparkles: kustomize
-```shell
-kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
 ### :sparkles: switch context accordingly
 ```shell
