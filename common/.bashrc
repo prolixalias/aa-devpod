@@ -175,6 +175,7 @@ function masterless() {
   export WORKING_DIR="/workspace"
   export FACTER_localdev=true
   export FACTER_role="roles::${1}"
+  export FACTER_aa_node_group=${FACTER_role}
   export DEBUG=${2}
 
   fix_ssh_egress # ongoing
