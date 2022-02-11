@@ -22,7 +22,7 @@ spec:
         postStart:
           exec:
             command:
-              - /bin/bash # several snowflake path variations between bionic/focal
+              - /bin/bash
               - -c
               - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
       securityContext:
@@ -65,7 +65,7 @@ spec:
         postStart:
           exec:
             command:
-              - /usr/bin/bash # # several snowflake path variations between bionic/focal
+              - /usr/bin/bash
               - -c
               - /usr/bin/mkdir -p /home/localdev/.ssh && /usr/bin/chmod 700 /home/localdev/.ssh && /usr/bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /usr/bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
       securityContext:
