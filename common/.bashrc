@@ -161,12 +161,23 @@ export PROMPT_DIRTRIM=4
 # tmux pane name trick
 /usr/bin/printf '\033]2;%s\033\\' "$(eval source /etc/os-release && echo $PRETTY_NAME)"
 
+function fix_ssh_egress() {
+  source='/home/localdev/.ssh-egress/..data'
+  destination='/home/localdev/.ssh'
+  /usr/bin/cmp --silent ${source}/id_ed25519 ${destination}/id_ed25519 || sudo cp -rf ${source}/* ${destination} && chown -R localdev:localdev ~/.ssh
+}
+
+# at login
+fix_ssh_egress
+
 # this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
 function masterless() {
   export WORKING_DIR="/workspace"
   export FACTER_localdev=true
   export FACTER_role="roles::${1}"
   export DEBUG=${2}
+
+  fix_ssh_egress # ongoing
 
   if [[ ! -L /etc/puppetlabs/code/environments/production ]]; then
     sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR} /etc/puppetlabs/code/environments/production
