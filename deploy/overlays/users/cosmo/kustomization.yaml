@@ -7,4 +7,4 @@ resources:
 patchesStrategicMerge:
   - pod.puppet-oraclelinux.yaml
   - pod.puppet-ubuntu.yaml
-  - configmap.git-config.yaml
+  - configmap.user-gitconfig.yaml

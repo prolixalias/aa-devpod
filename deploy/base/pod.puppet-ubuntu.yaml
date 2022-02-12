@@ -24,7 +24,7 @@ spec:
             command:
               - /bin/bash
               - -c
-              - /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
+              - /usr/bin/cp -aL /home/localdev/.user-gitconfig/.gitconfig /home/localdev/.gitconfig && /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
       securityContext:
         runAsUser: 33333
         runAsGroup: 33333
@@ -43,8 +43,8 @@ spec:
           # https://github.com/kubernetes/kubernetes/issues/34982
           mountPath: "/home/localdev/.ssh-egress"
           readOnly: true
-        - name: git-config
-          mountPath: "/home/localdev/.gitconfig"
+        - name: user-gitconfig
+          mountPath: "/home/localdev/.user-gitconfig"
           readOnly: true
         - name: r10k-config
           mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
@@ -67,7 +67,7 @@ spec:
             command:
               - /usr/bin/bash
               - -c
-              - /usr/bin/mkdir -p /home/localdev/.ssh && /usr/bin/chmod 700 /home/localdev/.ssh && /usr/bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /usr/bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
+              - /usr/bin/cp -aL /home/localdev/.user-gitconfig/.gitconfig /home/localdev/.gitconfig && /usr/bin/mkdir -p /home/localdev/.ssh && /usr/bin/chmod 700 /home/localdev/.ssh && /usr/bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /usr/bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /usr/bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
       securityContext:
         runAsUser: 33333
         runAsGroup: 33333
@@ -85,6 +85,9 @@ spec:
         - name: ssh-egress
           # https://github.com/kubernetes/kubernetes/issues/34982
           mountPath: "/home/localdev/.ssh-egress"
+          readOnly: true
+        - name: user-gitconfig
+          mountPath: "/home/localdev/.user-gitconfig"
           readOnly: true
         - name: r10k-config
           mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
@@ -135,9 +138,9 @@ spec:
             path: private_key.pkcs7.pem
           - key: public_key.pkcs7.pem
             path: public_key.pkcs7.pem
-    - name: git-config
+    - name: user-gitconfig
       configMap:
-        name: git-config
+        name: user-gitconfig
     - name: r10k-config
       configMap:
         name: r10k-config

@@ -1,10 +1,10 @@
-# configmap.git-config.yaml
+# configmap.user-gitconfig.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: devcontainer
-  name: git-config
+  name: user-gitconfig
 data:
   .gitconfig: |-
     [user]
