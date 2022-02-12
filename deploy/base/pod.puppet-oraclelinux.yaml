@@ -86,6 +86,9 @@ spec:
           # https://github.com/kubernetes/kubernetes/issues/34982
           mountPath: "/home/localdev/.ssh-egress"
           readOnly: true
+        - name: user-gitconfig
+          mountPath: "/home/localdev/.user-gitconfig"
+          readOnly: true
         - name: r10k-config
           mountPath: "/etc/puppetlabs/r10k/r10k.yaml"
           readOnly: true
