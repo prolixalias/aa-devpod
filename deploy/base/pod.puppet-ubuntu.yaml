@@ -24,7 +24,7 @@ spec:
             command:
               - /bin/bash
               - -c
-              - /usr/bin/cp -aL /home/localdev/.user-gitconfig/.gitconfig /home/localdev/.gitconfig && /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
+              - /bin/cp -aL /home/localdev/.user-gitconfig/.gitconfig /home/localdev/.gitconfig && /bin/mkdir -p /home/localdev/.ssh && /bin/chmod 700 /home/localdev/.ssh && /bin/cp -aL /home/localdev/.ssh-egress/* /home/localdev/.ssh && /bin/chmod 600 /home/localdev/.ssh/id_ed25519 && /bin/chmod 644 /home/localdev/.ssh/known_hosts /home/localdev/.ssh/id_ed25519.pub
       securityContext:
         runAsUser: 33333
         runAsGroup: 33333
