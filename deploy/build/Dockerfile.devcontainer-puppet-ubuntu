@@ -33,7 +33,8 @@ RUN \
     /bin/chmod 0440 /etc/sudoers.d/${USER_NAME} && \
     /opt/puppetlabs/puppet/bin/gem install ${PUPPET_GEMS} && \
     /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
-    /bin/rm -rf /var/lib/apt/lists/*
+    /usr/bin/apt clean
+    # /bin/rm -rf /var/lib/apt/lists/*
 
 FROM builder AS user
 
