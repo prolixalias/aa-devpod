@@ -1,0 +1,14 @@
+# pvc.git-repos.yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git-repos
+  namespace: devcontainer
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path # rancher-specific?
+  resources:
+    requests:
+      storage: 2Gi

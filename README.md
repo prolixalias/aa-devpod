@@ -20,21 +20,21 @@ Automation-centric devcontainers for use with VSCode
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal jammy; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
 done
 ```
 ###### oracle linux
   > *NOTE: vscode remote container not supported on 6*
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
 done
 ```
 ##### build puppet images
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for bionic with AARCH64*
@@ -43,7 +43,7 @@ done
 ###### oracle linux
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
@@ -63,6 +63,10 @@ docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devc
 ##### add local-path storage
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+```
+### :sparkles: namespace
+```shell
+kubectl apply -f deploy/base/namespace.devcontainer.yaml
 ```
 ### :sparkles: kustomize
 ```shell

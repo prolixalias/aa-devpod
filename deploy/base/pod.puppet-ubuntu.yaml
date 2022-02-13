@@ -77,8 +77,10 @@ spec:
             - SYS_PTRACE
       command: ["tail", "-f", "/dev/null"]
       volumeMounts:
-        - mountPath: /workspace
-          name: code-volume
+        - name: git-repos
+          mountPath: /workspace
+        # - mountPath: /workspace
+        #   name: code-volume
         - mountPath: /home/localdev/.cache
           name: cache-volume
           readOnly: true
@@ -100,20 +102,23 @@ spec:
           memory: 1024Mi
           cpu: ".75"
   volumes:
-    - name: code-volume
-      hostPath:
-        # LINUX/MACOS: location of repo on the host we're launching from:
-        path: .
-        # WINDOWS: it's COMPLICATED:
-        # - bind mount on the WSL2 image:
-        #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
-        # - this maps to:
-        #   /run/desktop/mnt/host/wsl/... for docker and kubernetes
-        #   see https://github.com/docker/for-win/issues/5325#issuecomment-567594291
-        #   (on docker-desktop wsl2 image, I can only see it as /mnt/host/wsl/... )
-        #path: /run/desktop/mnt/host/wsl/dbwriter_python
-        # this field is optional
-        type: Directory
+    - name: git-repos
+      persistentVolumeClaim:
+        claimName: git-repos
+    # - name: code-volume
+    #   hostPath:
+    #     # LINUX/MACOS: location of repo on the host we're launching from:
+    #     path: .
+    #     # WINDOWS: it's COMPLICATED:
+    #     # - bind mount on the WSL2 image:
+    #     #    sudo mount --bind /blah/blah/dbwriter_python /mnt/wsl/dbwriter_python
+    #     # - this maps to:
+    #     #   /run/desktop/mnt/host/wsl/... for docker and kubernetes
+    #     #   see https://github.com/docker/for-win/issues/5325#issuecomment-567594291
+    #     #   (on docker-desktop wsl2 image, I can only see it as /mnt/host/wsl/... )
+    #     #path: /run/desktop/mnt/host/wsl/dbwriter_python
+    #     # this field is optional
+    #     type: Directory
     - name: cache-volume
       # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
       # same as lifetime of the pod; OK for caching of package installs and so on
@@ -144,15 +149,3 @@ spec:
     - name: r10k-config
       configMap:
         name: r10k-config
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: local-path-pvc
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: local-path # rancher-specific?
-#   resources:
-#     requests:
-#       storage: 2Gi
