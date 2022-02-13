@@ -80,9 +80,9 @@ ssh-keygen -t ed25519 -a 100
 > *NOTE: add resulting public key to GHE, etc*
 #### create
 ```shell
-/usr/local/bin/op create document secret.ssh-egress.yaml --vault automation
-/usr/local/bin/op create document secret.eyaml-keys.yaml --vault automation
-/usr/local/bin/op create document secret.r10k-deploy-key.yaml --vault automation
+/usr/local/bin/op create document work/secret.ssh-egress.yaml --vault automation
+/usr/local/bin/op create document work/secret.eyaml-keys.yaml --vault automation
+/usr/local/bin/op create document work/secret.r10k-deploy-key.yaml --vault automation
 ```
 #### apply
 ```shell
