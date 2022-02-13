@@ -159,8 +159,8 @@ fix_ssh_egress # at login
 
 # this function uses 'puppet apply' and sets role fact to first argument
 function masterless() {
-  export CONTROL_REPO_URL="git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"
   export WORKING_DIR="/workspace"
+  export CONTROL_REPO_URL="git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"
   export CONTROL_REPO_DIR="lab-control-repo"
   export FACTER_localdev=true
   export FACTER_role="roles::${1}"
@@ -169,19 +169,14 @@ function masterless() {
 
   fix_ssh_egress # ongoing if secrets are updated
 
-  if [[ ! -d ${CONTROL_REPO_DIR}/${CONTROL_REPO_DIR} ]]; then
+  if [[ -d "${WORKING_DIR}/${CONTROL_REPO_DIR}" ]]; then
+    if [[ ! -L "/etc/puppetlabs/code/environments/production" ]]; then
+      sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR}/${CONTROL_REPO_DIR} /etc/puppetlabs/code/environments/production
+    fi
+  else
     cd ${WORKING_DIR}
     /usr/bin/git clone ${CONTROL_REPO_URL}
   fi
-
-  if [[ ! -L /etc/puppetlabs/code/environments/production ]]; then
-    sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR} /etc/puppetlabs/code/environments/production
-  fi
-
-  ### this is handled with secrets in kubernetes  
-  # if [[ ! -L /etc/puppetlabs/hiera/keys ]]; then
-  #   sudo mkdir -p /etc/puppetlabs/hiera && sudo ln -s ~/.puppetlabs/eyaml/keys /etc/puppetlabs/hiera/keys
-  # fi
 
   if [[ "${DEBUG}" == "debug" ]]; then
     APPLY="apply --debug"
@@ -189,7 +184,7 @@ function masterless() {
     APPLY="apply"
   fi
 
-  if [[ -f ${WORKING_DIR}/${CONTROL_REPO_DIR}/manifests/site.pp ]]; then
+  if [[ -f "${WORKING_DIR}/${CONTROL_REPO_DIR}/manifests/site.pp" ]]; then
     /usr/bin/sudo -E su -c "/usr/local/bin/puppet ${APPLY} --modulepath=${WORKING_DIR}/${CONTROL_REPO_DIR}/site:${WORKING_DIR}/${CONTROL_REPO_DIR}/modules --hiera_config=${WORKING_DIR}/${CONTROL_REPO_DIR}/hiera.yaml ${WORKING_DIR}/${CONTROL_REPO_DIR}/manifests/site.pp"
   else
     echo "Unable to locate site.pp file... Is this even a control repo workspace??"
