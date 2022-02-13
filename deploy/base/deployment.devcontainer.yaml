@@ -60,10 +60,10 @@ spec:
               readOnly: true
           resources:
             limits:
-              memory: 2048Mi
+              memory: 1024Mi
               cpu: ".75"
             requests:
-              memory: 1024Mi
+              memory: 512Mi
               cpu: ".75"
         - name: puppet-oraclelinux-8
           image: devcontainer-puppet-oraclelinux:8
@@ -105,10 +105,10 @@ spec:
               readOnly: true
           resources:
             limits:
-              memory: 2048Mi
+              memory: 1024Mi
               cpu: ".75"
             requests:
-              memory: 1024Mi
+              memory: 512Mi
               cpu: ".75"
         - name: puppet-ubuntu-bionic
           image: devcontainer-puppet-ubuntu:bionic
@@ -195,10 +195,10 @@ spec:
               readOnly: true
           resources:
             limits:
-              memory: 2048Mi
+              memory: 1024Mi
               cpu: ".75"
             requests:
-              memory: 1024Mi
+              memory: 512Mi
               cpu: ".75"
       volumes:
         - name: git-repos

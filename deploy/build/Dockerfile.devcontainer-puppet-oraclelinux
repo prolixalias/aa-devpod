@@ -31,7 +31,7 @@ RUN \
     /bin/ln -s /opt/puppetlabs/puppet/bin/r10k /usr/local/bin/r10k && \
     /opt/puppetlabs/puppet/bin/gem install ${PUPPET_GEMS} && \
     /bin/rm -rf /root/.gem/specs /var/lib/gems/*/cache && \
-    /usr/bin/yum clean all && \
+    /usr/bin/yum clean all
     # /bin/rm -rf /var/cache/yum
     # /bin/rm -f /var/lib/rpm/__db* && \ # this hoses 8
     # /usr/bin/rpmdb --rebuilddb
