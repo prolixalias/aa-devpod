@@ -146,18 +146,6 @@ __bash_prompt() {
 __bash_prompt
 export PROMPT_DIRTRIM=4
 
-# # setup git config with input from user on first launch
-# if [[ ! -a ~/.git_configured ]]; then
-#   read -p "Full name for git commits: " name
-#   read -p "Email address for git commits: " email
-#   # read -s -p "GitHub personal access token: " token
-#   echo
-#   /usr/bin/git config --global user.name ${name} && \
-#   /usr/bin/git config --global user.email ${email} && \
-#   # /usr/bin/git config --global url."https://${token}@ghe.aa.com/".insteadOf "https://ghe.aa.com/" && \
-#   /usr/bin/touch ~/.git_configured
-# fi
-
 # tmux pane name trick
 /usr/bin/printf '\033]2;%s\033\\' "$(eval source /etc/os-release && echo $PRETTY_NAME)"
 
@@ -167,18 +155,24 @@ function fix_ssh_egress() {
   /usr/bin/cmp --silent ${source}/id_ed25519 ${destination}/id_ed25519 || sudo cp -rf ${source}/* ${destination} && chown -R localdev:localdev ~/.ssh
 }
 
-# at login
-fix_ssh_egress
+fix_ssh_egress # at login
 
-# this function uses 'puppet apply' and sets datacenter/role fact(s) to first/second arguments
+# this function uses 'puppet apply' and sets role fact to first argument
 function masterless() {
+  export CONTROL_REPO_URL="git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"
   export WORKING_DIR="/workspace"
+  export CONTROL_REPO_DIR="lab-control-repo"
   export FACTER_localdev=true
   export FACTER_role="roles::${1}"
   export FACTER_aa_node_group=${FACTER_role}
   export DEBUG=${2}
 
-  fix_ssh_egress # ongoing
+  fix_ssh_egress # ongoing if secrets are updated
+
+  if [[ ! -d ${CONTROL_REPO_DIR}/${CONTROL_REPO_DIR} ]]; then
+    cd ${WORKING_DIR}
+    /usr/bin/git clone ${CONTROL_REPO_URL}
+  fi
 
   if [[ ! -L /etc/puppetlabs/code/environments/production ]]; then
     sudo rm -rf /etc/puppetlabs/code/environments/production && sudo ln -s ${WORKING_DIR} /etc/puppetlabs/code/environments/production
@@ -195,8 +189,8 @@ function masterless() {
     APPLY="apply"
   fi
 
-  if [[ -f ${WORKING_DIR}/manifests/site.pp ]]; then
-    /usr/bin/sudo -E su -c "/usr/local/bin/puppet ${APPLY} --modulepath=${WORKING_DIR}/site:${WORKING_DIR}/modules --hiera_config=${WORKING_DIR}/hiera.yaml ${WORKING_DIR}/manifests/site.pp"
+  if [[ -f ${WORKING_DIR}/${CONTROL_REPO_DIR}/manifests/site.pp ]]; then
+    /usr/bin/sudo -E su -c "/usr/local/bin/puppet ${APPLY} --modulepath=${WORKING_DIR}/${CONTROL_REPO_DIR}/site:${WORKING_DIR}/${CONTROL_REPO_DIR}/modules --hiera_config=${WORKING_DIR}/${CONTROL_REPO_DIR}/hiera.yaml ${WORKING_DIR}/${CONTROL_REPO_DIR}/manifests/site.pp"
   else
     echo "Unable to locate site.pp file... Is this even a control repo workspace??"
   fi
