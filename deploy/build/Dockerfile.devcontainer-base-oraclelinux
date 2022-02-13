@@ -22,8 +22,8 @@ ARG OS_PACKAGES="ca-certificates curl git jq less lsof man-db sudo time tmux tre
 
 RUN \
     unset DISPLAY && \
-    echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf && \
-    echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf && \
+    # echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf && \
+    # echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf && \
     /usr/bin/yum update -y && \
     /usr/bin/yum install -y ${OS_PACKAGES} && \
     # localectl set-locale LANG=en_US.UTF-8 && \
