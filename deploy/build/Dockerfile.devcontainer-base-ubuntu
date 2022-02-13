@@ -26,11 +26,11 @@ RUN \
     # echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf && \
     /bin/sed -i 's http://archive.ubuntu.com/ubuntu/ mirror://mirrors.ubuntu.com/mirrors.txt ' /etc/apt/sources.list && \
     apt update -y && \
-    apt upgrade -qqy && \
+    # apt upgrade -qqy && \
     apt install -qqy ${OS_PACKAGES} && \
     # locale-gen en_US.UTF-8 && \
     apt clean && \
-    rm -rf /var/lib/apt/lists/* && \
+    # rm -rf /var/lib/apt/lists/* && \
     /usr/sbin/groupadd --gid ${USER_GID} ${USER_NAME} && \
     # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
     useradd -l -u ${USER_UID} -g ${USER_NAME} -md /home/${USER_NAME} -s /bin/bash -p ${USER_NAME} ${USER_NAME} && \
