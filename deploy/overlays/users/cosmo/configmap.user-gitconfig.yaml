@@ -10,3 +10,5 @@ data:
     [user]
       name = Mike Thomasson
       email = michael.thomasson@aa.com
+    [push]
+      default = simple

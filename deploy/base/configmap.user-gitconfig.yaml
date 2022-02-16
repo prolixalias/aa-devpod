@@ -9,4 +9,6 @@ data:
   .gitconfig: |-
     [user]
       name = 
-      email =
+      email = 
+    [push]
+      default = simple
