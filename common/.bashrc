@@ -163,8 +163,8 @@ function masterless() {
   export CONTROL_REPO_URL="git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"
   export CONTROL_REPO_DIR="lab-control-repo"
   export FACTER_localdev=true
-  export FACTER_role="roles::${1}"
-  export FACTER_aa_node_group=${FACTER_role}
+  export FACTER_role="${1}"
+  # export FACTER_aa_node_group=${FACTER_role}
   export DEBUG=${2}
 
   fix_ssh_egress # ongoing if secrets are updated

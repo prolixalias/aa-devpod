@@ -12,3 +12,5 @@ data:
       email = 
     [push]
       default = simple
+    [pull]
+      rebase = true

@@ -10,5 +10,3 @@ data:
     [user]
       name = Devi Saladi
       email = devi.saladi@aa.com
-    [push]
-      default = simple
