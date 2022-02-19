@@ -10,3 +10,7 @@ data:
     [user]
       name = Paul Talbot
       email = paul.talbot@aa.com
+    [push]
+      default = simple
+    [pull]
+      rebase = true

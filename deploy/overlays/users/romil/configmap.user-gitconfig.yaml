@@ -10,3 +10,7 @@ data:
     [user]
       name = Romil Surti
       email = romil.surti@aa.com
+    [push]
+      default = simple
+    [pull]
+      rebase = true

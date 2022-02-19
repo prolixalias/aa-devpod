@@ -10,7 +10,3 @@ data:
     [user]
       name = 
       email = 
-    [push]
-      default = simple
-    [pull]
-      rebase = true
