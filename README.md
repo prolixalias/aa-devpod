@@ -65,12 +65,13 @@ docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devc
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 ```
 ### :sparkles: namespace
+## create
 ```shell
 kubectl apply -f deploy/base/namespace.devcontainer.yaml
 ```
-### :sparkles: kustomize
+## switch context accordingly
 ```shell
-kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
+kubectl config set-context $(kubectl config current-context) --namespace devcontainer
 ```
 ### :sparkles: secrets
 #### prerequisite keypair
@@ -83,16 +84,18 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op create document work/secret.ssh-egress.yaml --vault automation
 /usr/local/bin/op create document work/secret.eyaml-keys.yaml --vault automation
 /usr/local/bin/op create document work/secret.r10k-deploy-key.yaml --vault automation
+/usr/local/bin/op create document work/secret.git-remotes.yaml --vault automation
 ```
 #### apply
 ```shell
 /usr/local/bin/op get document secret.ssh-egress.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op get document secret.git-remotes.yaml --vault automation | kubectl apply -f -
 ```
-### :sparkles: switch context accordingly
+### :sparkles: kustomize
 ```shell
-kubectl config set-context $(kubectl config current-context) --namespace devcontainer
+kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
 ### :sparkles: helm (future use with puppetserver)
 #### add puppetserver chart
