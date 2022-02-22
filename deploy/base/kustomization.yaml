@@ -5,9 +5,9 @@ kind: Kustomization
 resources:
   - configmap.user-gitconfig.yaml
   - configmap.r10k-config.yaml
-  - secret.eyaml-keys.yaml
-  - secret.r10k-deploy-key.yaml
-  - secret.ssh-egress.yaml
+  # - secret.eyaml-keys.yaml
+  # - secret.r10k-deploy-key.yaml
+  # - secret.ssh-egress.yaml
   - pvc.git-repos.yaml
   - deployment.devcontainer.yaml 
   # - pod.puppet-oraclelinux.yaml
