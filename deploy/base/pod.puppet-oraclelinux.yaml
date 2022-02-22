@@ -13,10 +13,16 @@ spec:
     runAsGroup: 33333
     fsGroup: 33333
   containers:
-    - image: devcontainer-puppet-oraclelinux:7
+    - name: puppet-oraclelinux-7
+      image: devcontainer-puppet-oraclelinux:7
       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
       imagePullPolicy: Never
-      name: puppet-oraclelinux-7
+      env:
+      - name: SECRET_CONTROL_REPO_URL
+        valueFrom:
+          secretKeyRef:
+            name: git-remotes
+            key: control-repo      
       # https://github.com/kubernetes/kubernetes/issues/34982
       lifecycle:
         postStart:
@@ -58,10 +64,16 @@ spec:
         requests:
           memory: 1024Mi
           cpu: ".75"
-    - image: devcontainer-puppet-oraclelinux:8
+    - name: puppet-oraclelinux-8
+      image: devcontainer-puppet-oraclelinux:8
       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
       imagePullPolicy: Never
-      name: puppet-oraclelinux-8
+      env:
+      - name: SECRET_CONTROL_REPO_URL
+        valueFrom:
+          secretKeyRef:
+            name: git-remotes
+            key: control-repo
       # https://github.com/kubernetes/kubernetes/issues/34982
       lifecycle:
         postStart:

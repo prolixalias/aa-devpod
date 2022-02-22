@@ -160,7 +160,7 @@ fix_ssh_egress # at login
 # this function uses 'puppet apply' and sets role fact to first argument
 function masterless() {
   export WORKING_DIR="/workspace"
-  export CONTROL_REPO_URL="git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"
+  export CONTROL_REPO_URL=${SECRET_CONTROL_REPO_URL}
   export CONTROL_REPO_DIR="lab-control-repo"
   export FACTER_localdev=true
   export FACTER_role="${1}"
