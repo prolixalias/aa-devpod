@@ -1,0 +1,8 @@
+# namespace.devpod.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devpod
+  labels:
+    name: devpod

@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: devcontainer
+  namespace: devpod
   name: puppet-oraclelinux
   labels:
-    name: devcontainer
+    name: devpod
 spec:
   volumes:
     - name: code-volume

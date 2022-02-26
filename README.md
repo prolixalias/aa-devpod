@@ -1,11 +1,11 @@
-# aa-devcontainer
-Automation-centric devcontainers for use with VSCode
+# aa-devpod
+Automation-centric devpod for use with VSCode
 ## reference links
 
 | Link | Description |
 | ----------- | ----------- |
 | [Rancher Desktop](https://rancherdesktop.io)| Kubernetes and container management |
-| [Microsoft repos](https://github.com/microsoft/vscode-dev-containers) | Microsoft devcontainer repos/documentation on GitHub |
+| [Microsoft repos](https://github.com/microsoft/vscode-dev-containers) | Microsoft repos/documentation on GitHub |
 | [Docker Hub images](https://hub.docker.com/_/microsoft-vscode-devcontainers) | Official images on Docker Hub |
 | [Kubernetes Tools extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) | Extension to interact with kubernetes within VSCode |
 | [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) | Extension that allows remote development |
@@ -20,21 +20,21 @@ Automation-centric devcontainers for use with VSCode
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal jammy; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devcontainer-base-ubuntu -t prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devpod-base-ubuntu -t prolixalias/devpod-base-ubuntu:${OS_RELEASE} .
 done
 ```
 ###### oracle linux
   > *NOTE: vscode remote container not supported on 6*
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devcontainer-base-oraclelinux -t prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devpod-base-oraclelinux -t prolixalias/devpod-base-oraclelinux:${OS_RELEASE} .
 done
 ```
 ##### build puppet images
 ###### ubuntu
 ```shell
 for OS_RELEASE in bionic focal; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devpod-puppet-ubuntu -t devpod-puppet-ubuntu:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for bionic with AARCH64*
@@ -43,22 +43,22 @@ done
 ###### oracle linux
 ```shell
 for OS_RELEASE in 7 8; do
-  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devcontainer-puppet-oraclelinux -t devcontainer-puppet-oraclelinux:${OS_RELEASE} .
+  nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} --build-arg PUPPET_RELEASE=7 -f deploy/build/Dockerfile.devpod-puppet-oraclelinux -t devpod-puppet-oraclelinux:${OS_RELEASE} .
 done
 ```
   > *NOTE: `pdk` and `bolt` packages not implemented for [78] with AARCH64*
 #### [moby](https://mobyproject.org) - Windows, Docker Desktop (deprecated)
 ##### build bionic
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-bionic .
+docker build --no-cache --build-arg OS_RELEASE=bionic -f ./deploy/Dockerfile.devpod-puppet-ubuntu -t devpod-puppet-ubuntu-bionic .
 ```
 ##### build focal
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-focal .
+docker build --no-cache --build-arg OS_RELEASE=focal -f ./deploy/Dockerfile.devpod-puppet-ubuntu -t devpod-puppet-ubuntu-focal .
 ```
 ##### build jammy (future use, not implemented)
 ```shell
-docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devcontainer-puppet-ubuntu -t devcontainer-puppet-ubuntu-jammy .
+docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devpod-puppet-ubuntu -t devpod-puppet-ubuntu-jammy .
 ```
 ##### add local-path storage
 ```shell
@@ -67,11 +67,11 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 ### :sparkles: namespace
 ## create
 ```shell
-kubectl apply -f deploy/base/namespace.devcontainer.yaml
+kubectl apply -f deploy/base/namespace.devpod.yaml
 ```
 ## switch context accordingly
 ```shell
-kubectl config set-context $(kubectl config current-context) --namespace devcontainer
+kubectl config set-context $(kubectl config current-context) --namespace devpod
 ```
 ### :sparkles: secrets
 #### prerequisite keypair
@@ -104,7 +104,7 @@ helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 ```
 #### install puppetserver (future use)
 ```shell
-helm install puppetserver --namespace devcontainer puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
+helm install puppetserver --namespace devpod puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
 ```
 ### :sparkles: tmux tricks
 #### pane - top status

@@ -1,6 +1,6 @@
 FROM ubuntu:22.04 AS base
 
-LABEL image-name="devcontainer/puppet-focal"
+LABEL image-name="devpod/puppet-focal"
 LABEL maintainer="prolixalias@gmail.com"
 
 ARG DEBIAN_FRONTEND=noninteractive

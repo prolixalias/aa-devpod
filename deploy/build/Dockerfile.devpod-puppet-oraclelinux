@@ -6,7 +6,7 @@
 
 ARG OS_RELEASE
 
-FROM prolixalias/devcontainer-base-oraclelinux:${OS_RELEASE} AS builder
+FROM prolixalias/devpod-base-oraclelinux:${OS_RELEASE} AS builder
 
 ENV LC_ALL="C.UTF-8"
 ENV LANG="C.UTF-8"

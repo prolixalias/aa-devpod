@@ -50,7 +50,7 @@ puppetserver:
     ## Puppet Server Compilers' "alternateServerNames".
     ##
     fqdns:
-      alternateServerNames: "puppet,puppet.devcontainer,puppetserver,puppetserver.devcontainer,puppetcompiler.puppetcompiler.devcontainer" # Comma-separated
+      alternateServerNames: "puppet,puppet.devpod,puppetserver,puppetserver.devpod,puppetcompiler.puppetcompiler.devpod" # Comma-separated
 
     ## Service for Puppet Server Masters
     ## The usage of a TCP/Network LB type is strongly preferable

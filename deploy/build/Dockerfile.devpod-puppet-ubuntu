@@ -6,7 +6,7 @@
 
 ARG OS_RELEASE
 
-FROM prolixalias/devcontainer-base-ubuntu:${OS_RELEASE} AS builder
+FROM prolixalias/devpod-base-ubuntu:${OS_RELEASE} AS builder
 
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV LC_ALL="C.UTF-8"

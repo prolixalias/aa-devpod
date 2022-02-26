@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: devcontainer
+  namespace: devpod
   name: user-gitconfig
 data:
   .gitconfig: |-

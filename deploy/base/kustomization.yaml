@@ -8,7 +8,7 @@ resources:
   # - secret.eyaml-keys.yaml
   # - secret.r10k-deploy-key.yaml
   # - secret.ssh-egress.yaml
-  - pvc.git-repos.yaml
-  - deployment.devcontainer.yaml 
+  - pvc.workspaces.yaml
+  - deployment.devpod.yaml 
   # - pod.puppet-oraclelinux.yaml
   # - pod.puppet-ubuntu.yaml

@@ -1,10 +1,10 @@
-# pvc.git-repos.yaml
+# pvc.workspaces.yaml
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: git-repos
-  namespace: devcontainer
+  name: workspaces
+  namespace: devpod
 spec:
   accessModes:
     - ReadWriteOnce

@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: devcontainer
+  namespace: devpod
   name: puppet-ubuntu
   labels:
-    name: devcontainer
+    name: devpod
 spec:
   securityContext:
     runAsUser: 33333
@@ -14,7 +14,7 @@ spec:
     fsGroup: 33333
   containers:
     - name: puppet-ubuntu-bionic
-      image: devcontainer-puppet-ubuntu:bionic
+      image: devpod-puppet-ubuntu:bionic
       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
       imagePullPolicy: Never
       env:
@@ -63,7 +63,7 @@ spec:
           memory: 1024Mi
           cpu: ".75"
     - name: puppet-ubuntu-focal
-      image: devcontainer-puppet-ubuntu:focal
+      image: devpod-puppet-ubuntu:focal
       # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
       imagePullPolicy: Never
       env:
@@ -89,7 +89,7 @@ spec:
             - SYS_PTRACE
       command: ["tail", "-f", "/dev/null"]
       volumeMounts:
-        - name: git-repos
+        - name: workspaces
           mountPath: /workspace
         # - mountPath: /workspace
         #   name: code-volume
@@ -114,9 +114,9 @@ spec:
           memory: 1024Mi
           cpu: ".75"
   volumes:
-    - name: git-repos
+    - name: workspaces
       persistentVolumeClaim:
-        claimName: git-repos
+        claimName: workspaces
     # - name: code-volume
     #   hostPath:
     #     # LINUX/MACOS: location of repo on the host we're launching from:

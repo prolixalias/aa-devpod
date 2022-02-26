@@ -1,6 +1,6 @@
 FROM oraclelinux:8 AS base
 
-LABEL image-name="devcontainer/puppet-oraclelinux8"
+LABEL image-name="devpod/puppet-oraclelinux8"
 LABEL maintainer="prolixalias@gmail.com"
 
 ARG USER_NAME=puppet
