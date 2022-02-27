@@ -1,0 +1,16 @@
+# configmap.user-gitconfig.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: devpod
+  name: user-gitconfig
+data:
+  .gitconfig: |-
+    [user]
+      name = Makenzie Massey
+      email = mlaurmass@gmail.com
+    [push]
+      default = simple
+    [pull]
+      rebase = true
