@@ -331,7 +331,7 @@ r10k:
         ## or set the r10k known hosts file and SSH Private Key
         ## from a pre-existing K8s secret
         ## NOTE: Using this secret supercedes all other credentials settings.
-        existingSecret: ""
+        existingSecret: "r10k-deploy-key"
   hiera:
     resources: {}
     #  requests:
@@ -574,11 +574,11 @@ hiera:
     existingMap: ""
     ## A multi-line string
     ##
-    private_key:# |
+    private_key: |
       #  PRIV_KEY CONTENTS
     ## A multi-line string
     ##
-    public_key:# |
+    public_key: |
       #  PUB_KEY CONTENTS
 
 ## Global Values
