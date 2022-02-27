@@ -7,14 +7,14 @@
 puppetserver:
   name: puppetserver
   image: puppet/puppetserver
-  tag: 7.3.0
+  tag: 7.4.2
   pullPolicy: IfNotPresent
   ## Mandatory Deployment of Puppet Server Master/s
   ##
   masters:
-    ## Puppet Server Master resource requests and limits
-    ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
-    ##
+  ## Puppet Server Master resource requests and limits
+  ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
     resources: {}
     #  requests:
     #    memory: 1024Mi
@@ -50,7 +50,7 @@ puppetserver:
     ## Puppet Server Compilers' "alternateServerNames".
     ##
     fqdns:
-      alternateServerNames: "puppet,puppet.devpod,puppetserver,puppetserver.devpod,puppetcompiler.puppetcompiler.devpod" # Comma-separated
+      alternateServerNames: ""   # Comma-separated
 
     ## Service for Puppet Server Masters
     ## The usage of a TCP/Network LB type is strongly preferable
@@ -79,8 +79,7 @@ puppetserver:
       enabled: false
       ## Puppet Server Masters Ingress annotations
       ##
-      annotations:
-        {}
+      annotations: {}
         #  kubernetes.io/ingress.class: nginx
         #  nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       ## Puppet Server Masters Ingress additional labels
@@ -144,10 +143,10 @@ puppetserver:
   ## Optional StatefulSet of Puppet Server Compiler/s
   ##
   compilers:
-    enabled: true
-    ## Puppet Server Compiler resource requests and limits
-    ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
-    ##
+    enabled: false
+  ## Puppet Server Compiler resource requests and limits
+  ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
     resources: {}
     #  requests:
     #    memory: 1024Mi
@@ -210,7 +209,7 @@ puppetserver:
     ## Puppet Server Masters' "alternateServerNames".
     ##
     fqdns:
-      alternateServerNames: "" # Comma-separated
+      alternateServerNames: ""   # Comma-separated
 
     ## Service for Puppet Server Compilers
     ## The usage of a TCP/Network LB type is strongly preferable
@@ -248,8 +247,7 @@ puppetserver:
       enabled: false
       ## Puppet Server Compilers Ingress annotations
       ##
-      annotations:
-        {}
+      annotations: {}
         #  kubernetes.io/ingress.class: nginx
         #  nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       ## Puppet Server Compilers Ingress additional labels
@@ -281,14 +279,14 @@ puppetserver:
   ## the management of configuration data from that of the Puppet code base.
   ## A separate Hieradata Repo can be included in the "hiera" section in this file.
   ##
-  puppeturl: "git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git" #  git@github.com:$SOMEUSER/puppet.git
+  puppeturl: "git@ghe.aa.com:aot-puppet-lab/lab-control-repo.git"   #  git@github.com:$SOMEUSER/puppet.git
 
 ## r10k Repo Configuration
 ##
 r10k:
   name: r10k
   image: puppet/r10k
-  tag: 3.8.0
+  tag: 3.13.0
   pullPolicy: IfNotPresent
   code:
     resources: {}
@@ -312,7 +310,7 @@ r10k:
       credentials:
         netrc:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  NETRC CONTENTS
         ## or set the r10k netrc file
         ## from a pre-existing K8s secret
@@ -322,11 +320,11 @@ r10k:
       credentials:
         ssh:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  PRIV_KEY CONTENTS
         known_hosts:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  KNOWN_HOSTS CONTENTS
         ## or set the r10k known hosts file and SSH Private Key
         ## from a pre-existing K8s secret
@@ -354,7 +352,7 @@ r10k:
       credentials:
         netrc:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  NETRC CONTENTS
         ## or set the r10k netrc file
         ## from a pre-existing K8s secret
@@ -364,11 +362,11 @@ r10k:
       credentials:
         ssh:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  PRIV_KEY CONTENTS
         known_hosts:
           ## A multi-line string
-          value:# |
+          value:  # |
             #  KNOWN_HOSTS CONTENTS
         ## or set the r10k known hosts file and SSH Private Key
         ## from a pre-existing K8s secret
@@ -380,7 +378,7 @@ r10k:
 puppetdb:
   name: puppetdb
   image: puppet/puppetdb
-  tag: 7.5.2
+  tag: 7.7.1
   pullPolicy: IfNotPresent
   resources: {}
   #  requests:
@@ -410,7 +408,7 @@ puppetdb:
 
   ## puppetdb metrics enable/disable flag
   metrics:
-    enabled: true
+    enabled: false
   ## Use custom PVC for the Puppet PuppetDB
   customPersistentVolumeClaim:
     storage:
@@ -475,10 +473,10 @@ postgresql:
 ## Puppetboard Configuration
 ##
 puppetboard:
-  enabled: true
+  enabled: false
   name: puppetboard
   image: ghcr.io/voxpupuli/puppetboard
-  tag: 3.0.0
+  tag: 3.3.0
   port: 9090
   pullPolicy: IfNotPresent
   service:
@@ -492,19 +490,18 @@ puppetboard:
   #    cpu: 500m
   ## Additional puppetboard container environment variables
   ##
-  extraEnv:
-    ENABLE_CATALOG: True
-    ENABLE_QUERY: True
-    INVENTORY_FACTS: Hostname,fqdn,IP Address,ipaddress
-    GRAPH_FACTS: architecture,puppetversion,osfamily
+  extraEnv: {}
+  #  ENABLE_CATALOG: True
+  #  ENABLE_QUERY: True
+  #  INVENTORY_FACTS: Hostname,fqdn,IP Address,ipaddress
+  #  GRAPH_FACTS: architecture,puppetversion,osfamily
   ingress:
     ## If true, Puppetboard Ingress will be created
     ##
     enabled: false
     ## Puppetboard Ingress annotations
     ##
-    annotations:
-      {}
+    annotations: {}
       # kubernetes.io/ingress.class: nginx
     ## Puppetboard Ingress additional labels
     ##
@@ -527,58 +524,58 @@ puppetboard:
 ##
 hiera:
   name: hiera
-  hieradataurl: "" # git@github.com:$SOMEUSER/hieradata.git
+  hieradataurl: ""   # git@github.com:$SOMEUSER/hieradata.git
   ## A multi-line string
   ##
-  config: # |-
+  config:  # |-
   ## Hiera version 5 Example
   ##
-  # ---
-  # version: 5
-  # defaults:
-  #   datadir: data          # Datadir has moved into `defaults`. Relative to hiera.yaml's directory.
-  #   data_hash: yaml_data   # Default backend: New feature in v5.
-  # hierarchy:
-  #   - name: "Per-node data"        # Human-readable name. Can omit `backend` if using the default.
-  #     path:
-  #       - "nodes/%{trusted.certname}.yaml"   # File path, relative to datadir. Add file extension!
-  #   - name: "Per-datacenter secret data (encrypted)"
-  #     lookup_key: eyaml_lookup_key
-  #     path: "secrets/%{facts.whereami}.eyaml"   # Can use custom facts.
-  #     options:
-  #       pkcs7_private_key: /etc/puppetlabs/puppet/eyaml/keys/private_key.pkcs7.pem   # keep unchanged
-  #       pkcs7_public_key: /etc/puppetlabs/puppet/eyaml/keys/public_key.pkcs7.pem     # keep unchanged
-  #   - name: "Virtualization platform"
-  #     path: "virtual/%{facts.virtual}.yaml"   # Name and path are now separated.
-  #   - name: "Common"
-  #     path: "common.yaml"
+    # ---
+    # version: 5
+    # defaults:
+    #   datadir: data          # Datadir has moved into `defaults`. Relative to hiera.yaml's directory.
+    #   data_hash: yaml_data   # Default backend: New feature in v5.
+    # hierarchy:
+    #   - name: "Per-node data"        # Human-readable name. Can omit `backend` if using the default.
+    #     path:
+    #       - "nodes/%{trusted.certname}.yaml"   # File path, relative to datadir. Add file extension!
+    #   - name: "Per-datacenter secret data (encrypted)"
+    #     lookup_key: eyaml_lookup_key
+    #     path: "secrets/%{facts.whereami}.eyaml"   # Can use custom facts.
+    #     options:
+    #       pkcs7_private_key: /etc/puppetlabs/puppet/eyaml/keys/private_key.pkcs7.pem   # keep unchanged
+    #       pkcs7_public_key: /etc/puppetlabs/puppet/eyaml/keys/public_key.pkcs7.pem     # keep unchanged
+    #   - name: "Virtualization platform"
+    #     path: "virtual/%{facts.virtual}.yaml"   # Name and path are now separated.
+    #   - name: "Common"
+    #     path: "common.yaml"
   ## Hiera version 3 Example
   ##
-  # ---
-  # :backends:
-  #   - eyaml
-  # :hierarchy:
-  #   - "nodes/%{trusted.certname}"
-  #   - "secrets/%{facts.whereami}"
-  #   - "virtual/%{facts.virtual}"
-  #   - "common"
-  # :eyaml:
-  #   # Set branch name - e.g. "master", "%{::environment}", etc.
-  #   :datadir: /etc/puppetlabs/code/hiera-data/[branch]   # keep base path unchanged.
-  #   :extension: 'yaml'
-  #   :pkcs7_private_key: /etc/puppetlabs/puppet/eyaml/keys/private_key.pkcs7.pem   # keep unchanged
-  #   :pkcs7_public_key: /etc/puppetlabs/puppet/eyaml/keys/public_key.pkcs7.pem     # keep unchanged
+    # ---
+    # :backends:
+    #   - eyaml
+    # :hierarchy:
+    #   - "nodes/%{trusted.certname}"
+    #   - "secrets/%{facts.whereami}"
+    #   - "virtual/%{facts.virtual}"
+    #   - "common"
+    # :eyaml:
+    #   # Set branch name - e.g. "master", "%{::environment}", etc.
+    #   :datadir: /etc/puppetlabs/code/hiera-data/[branch]   # keep base path unchanged.
+    #   :extension: 'yaml'
+    #   :pkcs7_private_key: /etc/puppetlabs/puppet/eyaml/keys/private_key.pkcs7.pem   # keep unchanged
+    #   :pkcs7_public_key: /etc/puppetlabs/puppet/eyaml/keys/public_key.pkcs7.pem     # keep unchanged
   eyaml:
     ## Choose using either a pre-existing configMap containing keys, or the private_key/public_key set.
     ##
     existingMap: ""
     ## A multi-line string
     ##
-    private_key: |
+    private_key:  # |
       #  PRIV_KEY CONTENTS
     ## A multi-line string
     ##
-    public_key: |
+    public_key:  # |
       #  PUB_KEY CONTENTS
 
 ## Global Values
