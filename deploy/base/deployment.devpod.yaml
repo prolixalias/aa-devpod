@@ -120,10 +120,10 @@ spec:
           resources:
             limits:
               memory: 1024Mi
-              cpu: ".66"
+              cpu: ".4"
             requests:
               memory: 512Mi
-              cpu: ".66"
+              cpu: ".4"
         - name: puppet-ubuntu-bionic
           image: devpod-puppet-ubuntu:bionic
           # https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
@@ -222,10 +222,10 @@ spec:
           resources:
             limits:
               memory: 1024Mi
-              cpu: ".66"
+              cpu: ".4"
             requests:
               memory: 512Mi
-              cpu: ".66"
+              cpu: ".4"
       volumes:
         - name: workspaces
           persistentVolumeClaim:
