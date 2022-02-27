@@ -24,12 +24,12 @@ for OS_RELEASE in bionic focal jammy; do
 done
 ```
 ###### oracle linux
-  > *NOTE: vscode remote container not supported on 6*
 ```shell
 for OS_RELEASE in 7 8; do
   nerdctl -n k8s.io build --no-cache --build-arg OS_RELEASE=${OS_RELEASE} -f deploy/build/Dockerfile.devpod-base-oraclelinux -t prolixalias/devpod-base-oraclelinux:${OS_RELEASE} .
 done
 ```
+  > *NOTE: vscode remote container not supported on 6*
 ##### build puppet images
 ###### ubuntu
 ```shell
