@@ -76,7 +76,7 @@ puppetserver:
     ingress:
       ## If true, Puppet Server Masters Ingress will be created
       ##
-      enabled: false
+      enabled: true
       ## Puppet Server Masters Ingress annotations
       ##
       annotations: {}
@@ -88,8 +88,8 @@ puppetserver:
       ## Puppet Server Masters Ingress hostnames with optional path
       ## Must be provided if Ingress is enabled
       ##
-      hosts: []
-      #   - puppet.domain.com
+      hosts:
+        - puppetserver.devpod
       #   - domain.com/puppet
       ## Puppet Server Masters Ingress TLS configuration
       ## Secrets must be manually created in the namespace
@@ -143,7 +143,7 @@ puppetserver:
   ## Optional StatefulSet of Puppet Server Compiler/s
   ##
   compilers:
-    enabled: false
+    enabled: true
   ## Puppet Server Compiler resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
@@ -244,7 +244,7 @@ puppetserver:
     ingress:
       ## If true, Puppet Server Compilers Ingress will be created
       ##
-      enabled: false
+      enabled: true
       ## Puppet Server Compilers Ingress annotations
       ##
       annotations: {}
@@ -256,8 +256,9 @@ puppetserver:
       ## Puppet Server Compilers Ingress hostnames with optional path
       ## Must be provided if Ingress is enabled
       ##
-      hosts: []
-      #   - puppet-compilers.domain.com
+      hosts:
+        - puppet.devpod
+        - puppetcompiler.devpod
       #   - domain.com/puppet-compilers
       ## Puppet Server Compilers Ingress TLS configuration
       ## Secrets must be manually created in the namespace
@@ -473,7 +474,7 @@ postgresql:
 ## Puppetboard Configuration
 ##
 puppetboard:
-  enabled: false
+  enabled: true
   name: puppetboard
   image: ghcr.io/voxpupuli/puppetboard
   tag: 3.3.0
@@ -498,7 +499,7 @@ puppetboard:
   ingress:
     ## If true, Puppetboard Ingress will be created
     ##
-    enabled: false
+    enabled: true
     ## Puppetboard Ingress annotations
     ##
     annotations: {}
@@ -509,8 +510,8 @@ puppetboard:
     ## Puppetboard Ingress hostnames with optional path
     ## Must be provided if Ingress is enabled
     ##
-    hosts: []
-    #   - puppetboard.domain.com
+    hosts:
+      - puppetboard.devpod
     #   - domain.com/puppetboard
     ## Puppetboard Ingress TLS configuration
     ## Secrets must be manually created in the namespace
