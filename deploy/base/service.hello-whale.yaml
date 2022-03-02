@@ -1,0 +1,17 @@
+# service.hello-whale.yaml
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: hello-whale
+  namespace: default
+  labels:
+    app: hello-whale
+    version: blue
+spec:
+  selector:
+    app: hello-whale
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80

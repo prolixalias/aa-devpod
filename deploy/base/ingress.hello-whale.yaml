@@ -1,26 +1,26 @@
-# ingress.hello-world.yaml
+# ingress.hello-whale.yaml
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-whale
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    kubernetes.io/ingress.class: "nginx"  
-    cert-manager.io/issuer: "letsencrypt-prod" 
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: hello-whale
+  namespace: default
 spec:
-  tls:
-  - hosts:
-    - bf40-122-169-232-77.ngrok.io
-    secretName: bf40-122-169-232-77.ngrok.io
   rules:
-  - host: bf40-122-169-232-77.ngrok.io
+  - host: hello-whale.default
     http:
       paths:
       - path: /blue/(.*)
         pathType: Prefix
         backend:
           service:
-            name: hello-blue-whale-svc
+            name: hello-whale
             port:
               number: 80
+  tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - hello-whale.default
+    secretName: hello-whale-cert
