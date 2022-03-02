@@ -121,7 +121,10 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 helm install \
   cert-manager jetstack/cert-manager \
   --namespace kube-system \
-  --version v1.7.1
+  --version v1.7.1 \
+  --set ingressShim.defaultIssuerName=letsencrypt-prod \
+  --set ingressShim.defaultIssuerKind=ClusterIssuer \
+  --set ingressShim.defaultIssuerGroup=cert-manager.io
 ```
 #### apply cluster issuer for letsencrypt
 ```shell

@@ -6,6 +6,7 @@ metadata:
   annotations:
     # add an annotation indicating the issuer to use.
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: "traefik"
   name: hello-whale
   namespace: default
 spec:
@@ -13,14 +14,14 @@ spec:
   - host: hello-whale.default
     http:
       paths:
-      - path: /blue/(.*)
-        pathType: Prefix
+      - pathType: Prefix
+        path: /blue/(.*)
         backend:
           service:
             name: hello-whale
             port:
-              number: 80
+              number: 8008
   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
     - hello-whale.default
-    secretName: hello-whale-cert
+    secretName: cert-hello-whale

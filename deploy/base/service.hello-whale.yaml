@@ -13,5 +13,5 @@ spec:
     app: hello-whale
   type: LoadBalancer
   ports:
-  - port: 80
+  - port: 8008
     targetPort: 80
