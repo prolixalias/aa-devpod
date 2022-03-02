@@ -85,6 +85,7 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op create document work/secret.eyaml-keys.yaml --vault automation
 /usr/local/bin/op create document work/secret.r10k-deploy-key.yaml --vault automation
 /usr/local/bin/op create document work/secret.git-remotes.yaml --vault automation
+/usr/local/bin/op create document work/secret.ngrok-config.yaml --vault automation
 ```
 #### apply
 ```shell
@@ -92,16 +93,41 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op get document secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.git-remotes.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op get document secret.ngrok-config.yaml --vault automation | kubectl apply -f -
 ```
 ### :sparkles: kustomize
 ```shell
 kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
 ### :sparkles: helm (future use with puppetserver)
-#### add puppetserver chart
+#### add jetstack repo (for cert-manager)
+```shell
+helm repo add jetstack https://charts.jetstack.io
+```
+#### add puppet repo
 ```shell
 helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 ```
+#### update repo cache
+```shell
+helm repo update
+```
+#### install CRDs (customresourcedefinition)
+```shell
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.7.1/cert-manager.crds.yaml
+```
+#### install cert-manager
+```shell
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace kube-system \
+  --version v1.7.1
+```
+#### apply cluster issuer for letsencrypt
+```shell
+kubectl apply -f deploy/base/clusterissuer.letsencrypt.yaml
+```
+
 #### install puppetserver (future use)
 ```shell
 helm install puppetserver --namespace devpod puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml

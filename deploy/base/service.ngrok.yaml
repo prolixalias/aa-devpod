@@ -1,0 +1,15 @@
+# service.ngrok.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngrok
+  namespace: kube-system
+spec:
+  ports:
+  - port: 80
+    # Run this command in order to get the public URL for this ingress controller
+    # curl -sSL $(kubectl -n kube-system get svc ngrok -o template --template "{{.spec.clusterIP}}")/api/tunnels | jq  ".tunnels[].public_url" | sed 's/"//g;/http:/d'
+    targetPort: 4040
+  selector:
+    app: ngrok

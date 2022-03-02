@@ -1,0 +1,46 @@
+# deployment.ngrok.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok
+  namespace: kube-system
+  labels:
+    app: ngrok
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok
+  template:
+    metadata:
+      labels:
+        app: ngrok
+    spec:
+      tolerations:
+      - key: beta.kubernetes.io/arch
+        value: arm
+        effect: NoSchedule
+      - key: beta.kubernetes.io/arch
+        value: arm64
+        effect: NoSchedule
+      containers:
+      - image: luxas/ngrok:v2.1.18
+        name: ngrok
+        ports:
+        - name: web
+          containerPort: 4040
+        args:
+        - start
+        - -config=/etc/ngrok/ngrok.yml
+        - traefik
+        volumeMounts:
+          - name: ngrok-config
+            mountPath: /etc/ngrok/
+      volumes:
+      - name: ngrok-config
+        secret:
+          secretName: ngrok-config
+          items:
+            - key: ngrok.yml
+              path: ngrok.yml
