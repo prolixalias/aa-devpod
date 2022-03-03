@@ -64,6 +64,10 @@ docker build --no-cache --build-arg OS_RELEASE=jammy -f ./deploy/Dockerfile.devp
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 ```
+### :sparkles: dashboard
+```shell
+curl -sSL https://git.io/kube-dashboard | sed "s|image:.*|image: luxas/kubernetes-dashboard:v1.6.3|" | kubectl apply -f -
+```
 ### :sparkles: namespace
 ## create
 ```shell
@@ -100,6 +104,10 @@ ssh-keygen -t ed25519 -a 100
 kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
 ### :sparkles: helm (future use with puppetserver)
+#### add k8s dashboard
+```shell
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+```
 #### add jetstack repo (for cert-manager)
 ```shell
 helm repo add jetstack https://charts.jetstack.io
@@ -111,6 +119,10 @@ helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 #### update repo cache
 ```shell
 helm repo update
+```
+#### install dashboard
+```shell
+helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard
 ```
 #### install CRDs (customresourcedefinition)
 ```shell
