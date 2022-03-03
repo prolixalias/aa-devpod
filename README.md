@@ -72,7 +72,6 @@ curl -sSL https://git.io/kube-dashboard | sed "s|image:.*|image: luxas/kubernete
 ## create
 ```shell
 kubectl apply -f deploy/base/namespace.devpod.yaml
-
 ```
 ## switch context accordingly
 ```shell
@@ -133,7 +132,7 @@ helm install \
   --set ingressShim.defaultIssuerKind=ClusterIssuer \
   --set ingressShim.defaultIssuerGroup=cert-manager.io
 ```
-#### apply cluster issuer for letsencrypt
+#### apply cluster issuer for letsencrypt (currently needs help, don't run as-is)
 ```shell
 kubectl apply -f deploy/base/clusterissuer.letsencrypt.yaml
 ```
