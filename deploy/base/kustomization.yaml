@@ -9,6 +9,10 @@ resources:
   # - secret.r10k-deploy-key.yaml
   # - secret.ssh-egress.yaml
   - pvc.workspaces.yaml
+  # - clusterissuer.letsencrypt.yaml
   - deployment.devpod.yaml 
+  - deployment.ngrok.yaml
   # - pod.puppet-oraclelinux.yaml
   # - pod.puppet-ubuntu.yaml
+  - service.ngrok.yaml
+  - ingress.ngrok.yaml

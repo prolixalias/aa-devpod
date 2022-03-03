@@ -68,10 +68,11 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 ```shell
 curl -sSL https://git.io/kube-dashboard | sed "s|image:.*|image: luxas/kubernetes-dashboard:v1.6.3|" | kubectl apply -f -
 ```
-### :sparkles: namespace
+### :sparkles: namespaces
 ## create
 ```shell
 kubectl apply -f deploy/base/namespace.devpod.yaml
+
 ```
 ## switch context accordingly
 ```shell
@@ -90,6 +91,7 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op create document work/secret.r10k-deploy-key.yaml --vault automation
 /usr/local/bin/op create document work/secret.git-remotes.yaml --vault automation
 /usr/local/bin/op create document work/secret.ngrok-config.yaml --vault automation
+/usr/local/bin/op create document work/secret.aws-credentials.yaml --vault automation
 ```
 #### apply
 ```shell
@@ -98,16 +100,13 @@ ssh-keygen -t ed25519 -a 100
 /usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.git-remotes.yaml --vault automation | kubectl apply -f -
 /usr/local/bin/op get document secret.ngrok-config.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op get document secret.aws-credentials.yaml --vault automation | kubectl apply -f -
 ```
 ### :sparkles: kustomize
 ```shell
 kubectl kustomize deploy/overlays/users/paul | kubectl apply -f -
 ```
 ### :sparkles: helm (future use with puppetserver)
-#### add k8s dashboard
-```shell
-helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-```
 #### add jetstack repo (for cert-manager)
 ```shell
 helm repo add jetstack https://charts.jetstack.io
@@ -120,10 +119,6 @@ helm repo add puppet https://puppetlabs.github.io/puppetserver-helm-chart
 ```shell
 helm repo update
 ```
-#### install dashboard
-```shell
-helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard
-```
 #### install CRDs (customresourcedefinition)
 ```shell
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.7.1/cert-manager.crds.yaml
@@ -134,7 +129,7 @@ helm install \
   cert-manager jetstack/cert-manager \
   --namespace kube-system \
   --version v1.7.1 \
-  --set ingressShim.defaultIssuerName=letsencrypt-prod \
+  --set ingressShim.defaultIssuerName=letsencrypt-staging \
   --set ingressShim.defaultIssuerKind=ClusterIssuer \
   --set ingressShim.defaultIssuerGroup=cert-manager.io
 ```
@@ -145,7 +140,10 @@ kubectl apply -f deploy/base/clusterissuer.letsencrypt.yaml
 
 #### install puppetserver (future use)
 ```shell
-helm install puppetserver --namespace devpod puppet/puppetserver -f deploy/base/values.helm-puppetserver.yaml
+helm install \
+  puppetserver puppet/puppetserver \
+  --namespace devpod \
+  -f deploy/base/values.helm-puppetserver.yaml
 ```
 ### :sparkles: tmux tricks
 #### pane - top status
