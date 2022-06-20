@@ -85,21 +85,21 @@ ssh-keygen -t ed25519 -a 100
 > *NOTE: add resulting public key to GHE, etc*
 #### create
 ```shell
-/usr/local/bin/op create document work/secret.ssh-egress.yaml --vault automation
-/usr/local/bin/op create document work/secret.eyaml-keys.yaml --vault automation
-/usr/local/bin/op create document work/secret.r10k-deploy-key.yaml --vault automation
-/usr/local/bin/op create document work/secret.git-remotes.yaml --vault automation
-/usr/local/bin/op create document work/secret.ngrok-config.yaml --vault automation
-/usr/local/bin/op create document work/secret.aws-credentials.yaml --vault automation
+/usr/local/bin/op document create work/secret.ssh-egress.yaml --vault automation
+/usr/local/bin/op document create work/secret.eyaml-keys.yaml --vault automation
+/usr/local/bin/op document create work/secret.r10k-deploy-key.yaml --vault automation
+/usr/local/bin/op document create work/secret.git-remotes.yaml --vault automation
+/usr/local/bin/op document create work/secret.ngrok-config.yaml --vault automation
+/usr/local/bin/op document create work/secret.aws-credentials.yaml --vault automation
 ```
 #### apply
 ```shell
-/usr/local/bin/op get document secret.ssh-egress.yaml --vault automation | kubectl apply -f -
-/usr/local/bin/op get document secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
-/usr/local/bin/op get document secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
-/usr/local/bin/op get document secret.git-remotes.yaml --vault automation | kubectl apply -f -
-/usr/local/bin/op get document secret.ngrok-config.yaml --vault automation | kubectl apply -f -
-/usr/local/bin/op get document secret.aws-credentials.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.ssh-egress.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.eyaml-keys.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.r10k-deploy-key.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.git-remotes.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.ngrok-config.yaml --vault automation | kubectl apply -f -
+/usr/local/bin/op document get secret.aws-credentials.yaml --vault automation | kubectl apply -f -
 ```
 ### :sparkles: kustomize
 ```shell
