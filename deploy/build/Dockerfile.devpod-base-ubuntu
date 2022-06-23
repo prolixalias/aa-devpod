@@ -19,6 +19,7 @@ ARG USER_NAME="localdev"
 ARG USER_UID="33333"
 ARG USER_GID="33333"
 ARG OS_PACKAGES="ca-certificates curl git jq less lsof man-db software-properties-common sudo time tmux tree unzip vim wget zip zsh"
+ARG ASDF_VERSION="v0.10.0"
 
 RUN \
     unset DISPLAY && \
@@ -53,6 +54,7 @@ RUN \
     /usr/bin/curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
     /usr/bin/git clone --depth 1 https://github.com/rodjek/vim-puppet.git ~/.vim/bundle/puppet && \
     /usr/bin/git clone --depth 1 https://github.com/vim-syntastic/syntastic.git ~/.vim/bundle/syntastic
+    /usr/bin/git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch ${ASDF_VERSION}
 
 COPY common/.vimrc /home/${USER_NAME}/.vimrc
 COPY common/.bashrc /home/${USER_NAME}/.bashrc
